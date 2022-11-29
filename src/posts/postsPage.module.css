@@ -1,0 +1,23 @@
+.postWraper{
+    width: 280px;
+    height: 284px;
+    border: 1px solid black;
+    padding: 2px;
+
+}
+.postImg{
+    width: 280px;
+    height: 160px;
+}
+
+h5{
+    margin: 3px;
+}
+
+p{
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}
