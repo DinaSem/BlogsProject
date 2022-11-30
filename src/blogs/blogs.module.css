@@ -2,8 +2,9 @@
     /*padding: 15px;*/
     backgroundColor: '#f6f2f2';
     padding: 0;
+    margin:20px 0;
 }
 h1{
-    margin: 7px;
+    margin:7px;
     border-bottom: 1px solid #DEDBDC;
 }
