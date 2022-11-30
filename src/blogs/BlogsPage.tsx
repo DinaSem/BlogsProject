@@ -31,7 +31,7 @@ export default function BlogsPage() {
         setCurrentPage(currentPage+1)
     }
     const onClickAddBlogHandler = () => {
-      dispatch(addBlogTC('New Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
+      dispatch(addBlogTC('ABlog5 Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
         dispatch(fetchBlogsTC({}))
     }
 

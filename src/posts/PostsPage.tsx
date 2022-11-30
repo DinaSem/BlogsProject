@@ -7,9 +7,10 @@ import Search from "../searchPanel/Search";
 import {SelectComp} from "../searchPanel/SelectComp";
 import Container from "@mui/material/Container";
 import {Link} from "react-router-dom";
-import {fetchPostsTC} from "./post-reducer";
+import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {Blog} from "../blogs/blog/Blog";
+import {addBlogTC, fetchBlogsTC} from "../blogs/blogs-reducer";
 
 const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores delectus eius fuga minus officia porro reiciendis, sapiente? Cumque, quae.'
 
@@ -23,6 +24,10 @@ export const PostsPage = () => {
                                                           created={p.createdAt}/>)
 
     const dispatch = useAppDispatch()
+    const onClickAddPostHandler = () => {
+        dispatch(addPostTC('63867a24a97761cd307304c9','new post3', 'new description for new post', 'new content for new post'))
+        dispatch(fetchPostsTC({}))
+    }
 
     useEffect(() => {
         dispatch(fetchPostsTC({
@@ -42,6 +47,20 @@ export const PostsPage = () => {
             <div style={{display: 'flex', margin:'30px 0'}}>
                 <Search/>
                 <SelectComp/>
+            </div>
+            <div style={{display:"flex",justifyContent:"end", margin:"20px 0 "}}>
+                <Button variant="outlined" style={{
+                    width: '153px',
+                    color: "white",
+                    border: '1px solid black',
+                    background: '#F8346B',
+                    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',
+                    borderRadius: '2px'
+                }}
+                        onClick={onClickAddPostHandler}>
+                    {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
+                    Add post
+                </Button>
             </div>
             <div style={{
                 display: "flex",

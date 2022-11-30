@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {FormControl, MenuItem, SelectChangeEvent} from "@mui/material";
 import {Select} from "@mui/material";
 import {useAppDispatch} from "../hooks";
-import {fetchBlogsTC, sortDirectionAC} from "../blogs/blogs-reducer";
+import {fetchBlogsTC, sortDirectionBlogsAC} from "../blogs/blogs-reducer";
 
 export const SelectComp = () => {
     const valuesOfSelect = ['New blogs first', 'Old blogs first', 'From A to Z', 'From Z to A' ];
@@ -13,10 +13,11 @@ export const SelectComp = () => {
     const handleChange = (event: SelectChangeEvent) => {
         setSortValue(event.target.value as string)
         if(sortValue==='Old blogs first'){
-            dispatch(sortDirectionAC('asc'))
-            dispatch(fetchBlogsTC({}))
-            // dispatch(fetchBlogsTC({}))
+            dispatch(sortDirectionBlogsAC('desc'))
+        }if(sortValue==='New blogs first'){
+            dispatch(sortDirectionBlogsAC('asc'))
         }
+        dispatch(fetchBlogsTC({}))
     }
 
 

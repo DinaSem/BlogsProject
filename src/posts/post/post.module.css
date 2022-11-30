@@ -1,8 +1,9 @@
-.postWraper{
+.postWrapper{
     width: 280px;
     height: 284px;
     border: 1px solid black;
     padding: 2px;
+    position: relative;
 
 }
 .postImg{

@@ -2,7 +2,10 @@ import axios, {AxiosResponse} from "axios";
 
 
 const instance = axios.create({
-    baseURL: 'https://nest-blog4.herokuapp.com/',
+    baseURL: 'https://nest12.onrender.com/',
+    headers: {
+        'Authorization': 'Basic YWRtaW46cXdlcnR5',
+    }
 })
 
 // api
@@ -10,15 +13,16 @@ export const postsApi = {
     getPosts(params: PostsGetRequestDataType) {
         return instance.get<PostsGetRequestDataType, AxiosResponse<PostsGetResponseDataType>>('posts', {params});
     },
-    getPostDetails(id: string) {
-        return instance.get(`posts/${id}`);
+    getPostDetails(postId: string) {
+        return instance.get(`posts/${postId}`);
     },
-    // createTodolist(title: string) {
-    //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
-    // },
-    // deleteTodolist(id: string) {
-    //     return instance.delete<ResponseType>(`todo-lists/${id}`);
-    // },
+    deletePost(postId: string) {
+        return instance.delete(`posts/${postId}`);
+    },
+    createPost(blogId:string, title: string, shortDescription: string, content: string,) {
+        return instance.post(`blogs/${blogId}/posts`, {title,shortDescription,content});
+    },
+
     // updateTodolist(id: string, title: string) {
     //     return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title});
     // },
@@ -53,7 +57,7 @@ export type PostsGetResponseDataType = {
     page: number,
     pageSize: number,
     totalCount: number,
-    "items": PostType[]
+    items: PostType[]
 }
 
 export type PostType = {
@@ -61,10 +65,15 @@ export type PostType = {
     title: string,
     shortDescription: string,
     content: string,
-    bloggerId: string,
-    "blogName": string,
-    "createdAt": string
-
+    blogName: string,
+    createdAt: string
+    blogId: string,
+    extendedLikesInfo?: {
+        likesCount: number,
+        dislikesCount: number,
+        myStatus: string,
+        newestLikes: []
+    }
 }
 // export type PostsGetResponseDataType = {
 //     pagesCount: number,

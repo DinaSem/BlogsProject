@@ -16,7 +16,7 @@ const initialState = {
     pageSize: 10,
     pagesCount: 0,
     searchNameTerm: '',
-    sortBy: '',
+    sortBy: 'desc',
     sortDirection: 'desc',
     blog: {} as BlogType,
     blogsPostsData: {} as BlogsPostsGetResponseDataType,
@@ -55,9 +55,10 @@ export const blogsReducer = (state: InitialStateType = initialState, action: Blo
                     } : b)
                 }
             }
-        case "BLOGS/CHANGE-SORTDIRECTION-BLOG":
+        case "BLOGS/CHANGE-SORT-DIRECTION-BLOG":
             return {...state, sortDirection: action.sortDirection}
-
+        case "BLOGS/SORT-BY-BLOG":
+            return {...state, sortBy: action.sortBy}
         default:
             return state
     }
@@ -81,9 +82,13 @@ export const changeBlogAC = (blogId: string, name: string, websiteUrl: string, d
     name,
     websiteUrl, description
 } as const)
-export const sortDirectionAC = (sortDirection: string) => ({
-    type: 'BLOGS/CHANGE-SORTDIRECTION-BLOG',
+export const sortDirectionBlogsAC = (sortDirection: string) => ({
+    type: 'BLOGS/CHANGE-SORT-DIRECTION-BLOG',
     sortDirection
+} as const)
+export const sortByBlogsAC = (sortBy: string) => ({
+    type: 'BLOGS/SORT-BY-BLOG',
+    sortBy
 } as const)
 
 // thunks
@@ -168,7 +173,8 @@ export type SetSearchNameTermACType = ReturnType<typeof setSearchNameTermAC>;
 export type AddBlogACType = ReturnType<typeof addBlogAC>;
 export type RemoveBlogACType = ReturnType<typeof removeBlogAC>;
 export type ChangeBlogACType = ReturnType<typeof changeBlogAC>;
-export type sortDirectionAC = ReturnType<typeof sortDirectionAC>;
+export type SortDirectionType = ReturnType<typeof sortDirectionBlogsAC>;
+export type SortByBlogsType = ReturnType<typeof sortByBlogsAC>;
 
 export type BlogsActionsType =
     | SetBlogsType
@@ -178,7 +184,8 @@ export type BlogsActionsType =
     | AddBlogACType
     | RemoveBlogACType
     | ChangeBlogACType
-    | sortDirectionAC
+    | SortDirectionType
+    | SortByBlogsType
 
 // export type FilterValuesType = 'all' | 'active' | 'completed';
 // export type TodolistDomainType = TodolistType & {

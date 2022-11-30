@@ -24,7 +24,7 @@ export default function App1() {
                 justifyContent: "center",
                 minHeight: '100%',
                 boxSizing: "border-box",
-                maxWidth: '100%',
+                width: '100%',
                 padding: '63px 0 0 0 ',
                 backgroundColor: '#f6f2f2'
             }}>
