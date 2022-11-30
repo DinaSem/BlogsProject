@@ -27,14 +27,14 @@ export const Blog = (props:PropsType) => {
     return (
         <div className={s.wrapper}>
             <img src={image} className={s.blogsImg}/>
-            <div>
+            <div style={{width:"100%"}}>
                 <div onClick={navigateByBlog} style={{cursor:"pointer"}}>
                     <h2>{props.blogName}</h2>
                 </div>
                 <p>Website:{props.websiteUrl}</p>
                 <p>{props.description}</p>
             </div>
-            <MoreVertIcon onClick={onClickShowActions}/>
+            <MoreVertIcon onClick={onClickShowActions} style={{margin:'10px'}}/>
             {showActions && <Actions blogId={props.id}/>}
         </div>
     );

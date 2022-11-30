@@ -48,43 +48,45 @@ export default function BlogsPage() {
     console.log('sortDirection', sortDirection)
 
     return (
-        <Container style={{maxWidth: '100%', height: '100%',}} className={s.wrapper}>
+        <Container style={{maxWidth: '940px', height: '100%',}} className={s.wrapper}>
             <h1>Blogs</h1>
-            <div style={{display: 'flex', margin: '20px 0'}}>
-                <Search/>
-                <SelectComp/>
-            </div>
+            <div>
+                <div style={{display: 'flex', margin: '20px 0'}}>
+                    <Search/>
+                    <SelectComp/>
+                </div>
 
-            <div style={{display:"flex",justifyContent:"end", margin:"20px 0 "}}>
-                <Button variant="outlined" style={{
-                width: '153px',
-                color: "white",
-                border: '1px solid black',
-                background: '#F8346B',
-                boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',
-                borderRadius: '2px'
-            }}
-                       onClick={onClickAddBlogHandler}>
-                {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
-                Add blog
-            </Button>
-            </div>
-
-            <div>{blogsComponents}</div>
-
-            <div style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: '30px',
-                backgroundColor: '#f6f2f2',
-                width: '100%'
-            }}>
-                <Button variant="outlined" style={{width: '153px', color: "black", border: '1px solid black',}}
-                        onClick={onClickShowMoreHandler} disabled={blogs.pagesCount===currentPage&&true}>
+                <div style={{display: "flex", justifyContent: "end", margin: "20px 0 "}}>
+                    <Button variant="outlined" style={{
+                        width: '153px',
+                        color: "white",
+                        border: '1px solid black',
+                        background: '#F8346B',
+                        boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',
+                        borderRadius: '2px'
+                    }}
+                            onClick={onClickAddBlogHandler}>
                         {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
-                    Show more
-                    <KeyboardArrowDownIcon/>
-                </Button>
+                        Add blog
+                    </Button>
+                </div>
+
+                <div>{blogsComponents}</div>
+
+                <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: '30px',
+                    backgroundColor: '#f6f2f2',
+                    width: '100%'
+                }}>
+                    <Button variant="outlined" style={{width: '153px', color: "black", border: '1px solid black',}}
+                            onClick={onClickShowMoreHandler} disabled={blogs.pagesCount === currentPage && true}>
+                        {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
+                        Show more
+                        <KeyboardArrowDownIcon/>
+                    </Button>
+                </div>
             </div>
         </Container>
     );

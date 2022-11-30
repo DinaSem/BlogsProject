@@ -1,12 +1,12 @@
 .wrapper {
-    max-width: 100%;
+    max-width: 940px;
     height: 156px;
     /*min-width: 100%;*/
     /*max-height: 156px;*/
     /*border-bottom: 1px solid #DEDBDC;*/
     border: 1px solid black;
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     margin-bottom: 20px;
     position: relative;
 }

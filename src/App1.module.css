@@ -40,14 +40,15 @@
 .appWrapper{
   justify-content: center;
   align-items: center;
-  width: 1280px;
+  min-width: 1280px;
   /*height: 1208px;*/
   min-height: 100vh;
   position: relative;
   color: #1A1718;
   box-sizing: border-box;
   border: 1px solid black;
-  display: flex;
+  display: grid;
+  grid-template-columns: 252px 1fr;
   align-items: center;
   justify-content: center;
   padding: 0;
