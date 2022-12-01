@@ -33,7 +33,7 @@ export const blogsReducer = (state: InitialStateType = initialState, action: Blo
         case "BLOGS/SET-BLOGS-POSTS":
             return {...state, blogsPostsData: action.blogsPostsData}
         case "BLOGS/SET-SEARCH-NAME-TERM":
-            return {...state, searchNameTerm: action.value}
+            return {...state, searchNameTerm: action.title}
         case 'BLOGS/ADD-BLOG':
             return {...action.blog, ...state}
         case 'BLOGS/REMOVE-BLOG':
@@ -73,7 +73,7 @@ export const setBlogsPostsAC = (blogsPostsData: BlogsPostsGetResponseDataType, i
     blogsPostsData,
     id
 } as const)
-export const setSearchNameTermAC = (value: string) => ({type: 'BLOGS/SET-SEARCH-NAME-TERM', value} as const)
+export const setSearchNameTermAC = (title: string) => ({type: 'BLOGS/SET-SEARCH-NAME-TERM', title} as const)
 export const addBlogAC = (blog: BlogType) => ({type: 'BLOGS/ADD-BLOG', blog} as const)
 export const removeBlogAC = (id: string) => ({type: 'BLOGS/REMOVE-BLOG', id} as const)
 export const changeBlogAC = (blogId: string, name: string, websiteUrl: string, description: string) => ({

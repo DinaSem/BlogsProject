@@ -6,13 +6,13 @@ import {setSearchNameTermAC} from "../blogs/blogs-reducer";
 import {useAppDispatch} from "../hooks";
 
 export const Search = () => {
-    let [title, setTitle] = useState('')
+    // let [title, setTitle] = useState('')
     const dispatch = useAppDispatch()
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 
-        dispatch(setSearchNameTermAC(title))
-        setTitle(e.currentTarget.value)
+        dispatch(setSearchNameTermAC(e.currentTarget.value))
+        // setTitle(e.currentTarget.value)
     }
 
 
@@ -23,9 +23,9 @@ export const Search = () => {
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search"
-                value={title}
+                // value={title}
                 onChange={onChangeHandler}
-                // inputProps={{ 'aria-label': 'search google maps' }}
+                inputProps={{ 'aria-label': 'search google maps' }}
             />
         </Paper>
     );

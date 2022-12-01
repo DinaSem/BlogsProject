@@ -23,7 +23,7 @@ h1 {
     min-height: 156px;
     background: #f6f2f2;
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     margin-bottom: 15px;
 }
 

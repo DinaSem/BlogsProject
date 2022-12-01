@@ -6,11 +6,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Search from "../searchPanel/Search";
 import {SelectComp} from "../searchPanel/SelectComp";
 import Container from "@mui/material/Container";
-import {Link} from "react-router-dom";
 import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
-import {Blog} from "../blogs/blog/Blog";
-import {addBlogTC, fetchBlogsTC} from "../blogs/blogs-reducer";
 
 const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores delectus eius fuga minus officia porro reiciendis, sapiente? Cumque, quae.'
 
@@ -40,7 +37,7 @@ export const PostsPage = () => {
     console.log(posts)
 
     return (
-        <Container style={{maxWidth: '100%',height: '100%', }} className={s.wrapper}>
+        <Container style={{maxWidth: '100%',minHeight: '100vh', }} className={s.wrapper}>
 
             <h2>Posts</h2>
 

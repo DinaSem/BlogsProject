@@ -34,21 +34,21 @@ export default function BlogsPage() {
       dispatch(addBlogTC('ABlog5 Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
         dispatch(fetchBlogsTC({}))
     }
-
+    console.log(searchNameTerm)
     useEffect(() => {
         dispatch(fetchBlogsTC({
                 pageNumber:currentPage,
                 //pageSize:currentPage,
             // pageSize:20,
-                //searchNameTerm,
+            searchNameTerm,
             sortDirection,
             }
         ))
-    }, [dispatch, searchNameTerm, pageSize,pageNumber,currentPage,sortDirection])
+    }, [searchNameTerm, pageSize,pageNumber,currentPage,sortDirection])
     console.log('sortDirection', sortDirection)
 
     return (
-        <Container style={{maxWidth: '940px', height: '100%',}} className={s.wrapper}>
+        <Container style={{maxWidth: '940px', minHeight: '100vh',}} className={s.wrapper}>
             <h1>Blogs</h1>
             <div>
                 <div style={{display: 'flex', margin: '20px 0'}}>
