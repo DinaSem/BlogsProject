@@ -22,7 +22,7 @@ export const PostsPage = () => {
 
     const dispatch = useAppDispatch()
     const onClickAddPostHandler = () => {
-        dispatch(addPostTC('63867a24a97761cd307304c9','new post3', 'new description for new post', 'new content for new post'))
+        dispatch(addPostTC('63899fca2834b07cfbdf7807','new post3', 'new description for new post', 'new content for new post'))
         dispatch(fetchPostsTC({}))
     }
 

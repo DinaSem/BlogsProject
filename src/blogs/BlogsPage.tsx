@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {addBlogTC, fetchBlogsTC} from "./blogs-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
+import {BasicModal} from "../modal windows/basic modal/BasicModal";
+import {AddBlogModal} from "../modal windows/blogs modal/add blog modal/AddBlogModal";
+import {useNavigate} from "react-router-dom";
 
 export default function BlogsPage() {
     const pageNumber = useAppSelector(state => state.blogs.pageNumber)
@@ -20,6 +23,7 @@ export default function BlogsPage() {
 
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const blogsComponents = blogs.items?.map((b) => <Blog key={b.id}
                                                           id={b.id}
@@ -27,12 +31,14 @@ export default function BlogsPage() {
                                                           websiteUrl={b.websiteUrl}
                                                           description={b.description}/>)
     const onClickShowMoreHandler = () => {
-        // dispatch(increasePageNumber(pageNumber))
         setCurrentPage(currentPage+1)
     }
     const onClickAddBlogHandler = () => {
-      dispatch(addBlogTC('ABlog5 Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
-        dispatch(fetchBlogsTC({}))
+      // dispatch(addBlogTC('ABlog5 Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
+      //   dispatch(fetchBlogsTC({}))
+
+            navigate(`addblog`)
+
     }
     console.log(searchNameTerm)
     useEffect(() => {
@@ -69,6 +75,7 @@ export default function BlogsPage() {
                         {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
                         Add blog
                     </Button>
+                    <AddBlogModal/>
                 </div>
 
                 <div>{blogsComponents}</div>

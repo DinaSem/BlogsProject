@@ -3,8 +3,8 @@ import s from './post.module.css'
 import image from '../../pictures/noimage.jpg'
 import {useNavigate} from 'react-router-dom';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {Actions} from "../../modal windows/Actions";
-import {ActionsForPosts} from "../../modal windows/ActionsForPosts";
+import {Actions} from "../../modal windows/actons/Actions";
+import {ActionsForPosts} from "../../modal windows/actons/ActionsForPosts";
 
 const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores delectus eius fuga minus officia porro reiciendis, sapiente? Cumque, quae.'
 

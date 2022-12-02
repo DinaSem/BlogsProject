@@ -3,7 +3,7 @@ import s from './blog.module.css'
 import image from '../../pictures/noimage.jpg'
 import {useNavigate} from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {Actions} from "../../modal windows/Actions";
+import {Actions} from "../../modal windows/actons/Actions";
 
 type PropsType={
     blogName:string,

@@ -1,8 +1,8 @@
 import React from 'react';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import {useAppDispatch} from "../hooks";
-import {changeBlogTC, removeBlogTC} from "../blogs/blogs-reducer";
+import {useAppDispatch} from "../../hooks";
+import {changeBlogTC, removeBlogTC} from "../../blogs/blogs-reducer";
 
 type PropsType = {
     blogId: string
