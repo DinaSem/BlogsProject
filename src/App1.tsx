@@ -9,7 +9,6 @@ import Container from "@mui/material/Container";
 import {BlogDetails} from "./blogs/blog/blogDetails/BlogDetails";
 import Navbar from "./navbar/Navbar";
 import {PostDetails} from "./posts/post/postDetails/PostDetails";
-import {AddBlogModal} from "./modal windows/blogs modal/add blog modal/AddBlogModal";
 import {AddBlog} from "./blogs/blog/addBlog/AddBlog";
 
 

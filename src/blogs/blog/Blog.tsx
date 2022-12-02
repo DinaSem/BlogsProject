@@ -21,7 +21,7 @@ export const Blog = (props:PropsType) => {
         navigate(`blog/${props.id}`)
     }
     const onClickShowActions = () => {
-        setShowActions(true)
+        setShowActions(!showActions)
     }
 
     return (
@@ -35,7 +35,7 @@ export const Blog = (props:PropsType) => {
                 <p>{props.description}</p>
             </div>
             <MoreVertIcon onClick={onClickShowActions} style={{margin:'10px'}}/>
-            {showActions && <Actions blogId={props.id}/>}
+            {showActions && <Actions blogId={props.id} blogName={props.blogName}/>}
         </div>
     );
 };

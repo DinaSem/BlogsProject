@@ -10,7 +10,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {addBlogTC, fetchBlogsTC} from "./blogs-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {BasicModal} from "../modal windows/basic modal/BasicModal";
-import {AddBlogModal} from "../modal windows/blogs modal/add blog modal/AddBlogModal";
 import {useNavigate} from "react-router-dom";
 
 export default function BlogsPage() {
@@ -75,7 +74,7 @@ export default function BlogsPage() {
                         {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
                         Add blog
                     </Button>
-                    <AddBlogModal/>
+
                 </div>
 
                 <div>{blogsComponents}</div>
