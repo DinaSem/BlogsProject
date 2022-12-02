@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../hooks";
 import {BasicModal} from "../../basic modal/BasicModal";
 import Box from "@mui/material/Box";
@@ -12,21 +10,33 @@ import {removeBlogTC} from "../../../blogs/blogs-reducer";
 type PropsType = {
     blogId: string
     blogName:string
+    showActions:boolean
+    setShowActions:(showActions:boolean)=>void
 }
-export const DeletePackModal = ({blogId,blogName}: PropsType) => {
+export const DeleteBlogModal = ({blogId,blogName,showActions,setShowActions}: PropsType) => {
 
     const [open, setOpen] = useState<boolean>(false)
     const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
 
-    const dispatch = useAppDispatch();
+    const handleClose = () => {
+        setOpen(false)
+        closeActionWindow()
+    }
+
+    const dispatch = useAppDispatch()
+
+    //Закрыте окошка с удаление-редактирование
+    const closeActionWindow = () => {
+        setShowActions(!showActions)
+    }
     const handleBlogDelete = () => {
         dispatch(removeBlogTC(blogId))
         handleClose()
+        closeActionWindow()
     }
 
     return (
-        <div style={{display: 'inline-block'}}>
+        <Box style={{display: 'inline-block'}}>
 
             <Box style={{cursor: 'pointer'}} onClick={handleOpen}>
                 <DeleteOutlineIcon style={{margin: '-4px 4px'}}/>
@@ -41,7 +51,7 @@ export const DeletePackModal = ({blogId,blogName}: PropsType) => {
                                 margin={'8px'}>
                         Are you sure you want to delete this blog <b>{blogName}</b>?
                     </Typography>
-                    <Stack direction="row" spacing={2} style={{width: '100%'}} justifyContent={'space-around'}>
+                    <Stack direction="row" spacing={2} style={{width: '100%'}} justifyContent={'space-between'}>
                         <Button onClick={handleClose} style={{
                             width: '124px',
                             color: "white",
@@ -64,6 +74,6 @@ export const DeletePackModal = ({blogId,blogName}: PropsType) => {
                     </Stack>
                 </div>
             </BasicModal>
-        </div>
+        </Box>
     )
 }

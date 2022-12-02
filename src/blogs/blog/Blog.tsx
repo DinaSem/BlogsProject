@@ -35,7 +35,7 @@ export const Blog = (props:PropsType) => {
                 <p>{props.description}</p>
             </div>
             <MoreVertIcon onClick={onClickShowActions} style={{margin:'10px'}}/>
-            {showActions && <Actions blogId={props.id} blogName={props.blogName}/>}
+            {showActions && <Actions blogId={props.id} blogName={props.blogName} showActions={showActions} setShowActions={onClickShowActions}/>}
         </div>
     );
 };

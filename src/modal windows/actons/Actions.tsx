@@ -1,13 +1,14 @@
 import React from 'react';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {useAppDispatch} from "../../hooks";
-import {changeBlogTC, removeBlogTC} from "../../blogs/blogs-reducer";
-import {DeletePackModal} from "../blogs modal/delete blog modal/DeleteBlogModal";
+import {changeBlogTC} from "../../blogs/blogs-reducer";
+import {DeleteBlogModal} from "../blogs modal/delete blog modal/DeleteBlogModal";
 
 type PropsType = {
     blogId: string
     blogName:string
+    showActions:boolean
+    setShowActions:(showActions:boolean)=>void
 }
 
 export const Actions = (props: PropsType) => {
@@ -31,7 +32,7 @@ export const Actions = (props: PropsType) => {
             right: 0,
             top: '20%'
         }}>
-            <DeletePackModal blogId={props.blogId} blogName={props.blogName}/>
+            <DeleteBlogModal blogId={props.blogId} blogName={props.blogName} showActions={props.showActions} setShowActions={props.setShowActions}/>
             <div onClick={onClickEditBlogHandler} style={{cursor: 'pointer'}}>
                 <EditOutlinedIcon style={{margin: '-4px 4px'}}/>
                 Edit
