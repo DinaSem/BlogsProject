@@ -49,8 +49,8 @@ export default function BlogsPage() {
             sortDirection,
             }
         ))
-    }, [searchNameTerm, pageSize,pageNumber,currentPage,sortDirection])
-    console.log('sortDirection', sortDirection)
+    }, [dispatch, searchNameTerm, pageSize,pageNumber,currentPage,sortDirection])
+
 
     return (
         <Container style={{maxWidth: '940px', minHeight: '100vh',}} className={s.wrapper}>

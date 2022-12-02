@@ -76,7 +76,7 @@ export const setBlogsPostsAC = (blogsPostsData: BlogsPostsGetResponseDataType, i
 export const setSearchNameTermAC = (title: string) => ({type: 'BLOGS/SET-SEARCH-NAME-TERM', title} as const)
 export const addBlogAC = (blog: BlogType) => ({type: 'BLOGS/ADD-BLOG', blog} as const)
 export const removeBlogAC = (id: string) => ({type: 'BLOGS/REMOVE-BLOG', id} as const)
-export const changeBlogAC = (blogId: string, name: string, websiteUrl: string, description: string) => ({
+export const changeBlogAC = (blogId: string, name?: string, websiteUrl?: string, description?: string) => ({
     type: 'BLOGS/CHANGE-BLOG',
     blogId,
     name,
@@ -155,7 +155,7 @@ export const removeBlogTC = (id: string) => {
     }
 }
 
-export const changeBlogTC = (blogId: string, name: string, websiteUrl: string, description: string) => {
+export const changeBlogTC = (blogId: string, name?: string, websiteUrl?: string, description?: string) => {
     return (dispatch: ThunkDispatch) => {
         blogsApi.updateBlog(blogId, name, websiteUrl, description)
             .then((res) => {

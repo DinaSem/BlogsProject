@@ -9,7 +9,6 @@ import Container from "@mui/material/Container";
 import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
-const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores delectus eius fuga minus officia porro reiciendis, sapiente? Cumque, quae.'
 
 export const PostsPage = () => {
     const posts = useAppSelector(state => state.posts.postsData)
@@ -22,7 +21,7 @@ export const PostsPage = () => {
 
     const dispatch = useAppDispatch()
     const onClickAddPostHandler = () => {
-        dispatch(addPostTC('63899fca2834b07cfbdf7807','new post3', 'new description for new post', 'new content for new post'))
+        dispatch(addPostTC('638a0495ef27e52f30326c08','new post3', 'new description for new post', 'new content for new post'))
         dispatch(fetchPostsTC({}))
     }
 

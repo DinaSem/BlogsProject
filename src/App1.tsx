@@ -10,6 +10,7 @@ import {BlogDetails} from "./blogs/blog/blogDetails/BlogDetails";
 import Navbar from "./navbar/Navbar";
 import {PostDetails} from "./posts/post/postDetails/PostDetails";
 import {AddBlog} from "./blogs/blog/addBlog/AddBlog";
+import {EditBlog} from "./blogs/blog/editBlog/EditBlog";
 
 
 export default function App1() {
@@ -58,6 +59,7 @@ export default function App1() {
                             <Route path='/posts/' element={<PostsPage/>}/>
                             <Route path='blog/:id' element={<BlogDetails/>}/>
                             <Route path='/addblog/' element={<AddBlog/>}/>
+                            <Route path='/editblog/:id/' element={<EditBlog/>}/>
                             <Route path='posts/post/:id' element={<PostDetails/>}/>
                         </Routes>
                     </Box>

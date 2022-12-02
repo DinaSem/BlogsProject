@@ -32,7 +32,7 @@ export const blogsApi = {
         return instance.delete(`blogs/${blogId}`);
     },
     updateBlog(blogId: string, name?: string, websiteUrl?: string, description?:string) {
-        return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`blogs/${blogId}`, {name, websiteUrl,description});
+        return instance.put<{ name: string, websiteUrl: string, description:string}, AxiosResponse<ResponseType>>(`blogs/${blogId}`, {name, websiteUrl,description});
     },
     // getTasks(todolistId: string) {
     //     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);

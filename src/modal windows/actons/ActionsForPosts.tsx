@@ -16,11 +16,7 @@ export const ActionsForPosts = (props: PropsType) => {
         dispatch(removePostTC(props.postId))
     }
     const onClickEditPostHandler = () => {
-        dispatch(changeBlogTC(
-            props.postId,
-            'New Blog name',
-            'www.newUrl', 'Новое описание при редакировани описания блога. Как-то так'
-        ))
+        dispatch(changeBlogTC(props.postId, 'New Blog name', 'www.newUrl', 'Новое описание при редакировани описания блога. Как-то так'))
     }
     return (
         <div style={{
