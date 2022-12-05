@@ -86,6 +86,7 @@ export const addPostTC = (blogId: string,title: string, shortDescription: string
         postsApi.createPost(blogId,title,shortDescription,content)
             .then((res) => {
                 dispatch(addPostAC(res.data.items))
+                console.log(res.data.items)
                 // dispatch(setAppStatusAC('succeeded'))
             })
     }

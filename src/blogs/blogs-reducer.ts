@@ -123,7 +123,7 @@ export const fetchBlogDetailsAndPostsTC = (id: string) => {
             .then((res) => {
                 // console.log('RESULT BY BLOG:', res.data)
                 dispatch(setBlogsPostsAC(res.data, id))
-                console.log('BLOGS-POSTS', res.data.items)
+                // console.log('BLOGS-POSTS', res.data.items)
                 // dispatch(setAppStatusAC('succeeded'))
             })
     }

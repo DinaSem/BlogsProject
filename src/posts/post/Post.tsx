@@ -6,8 +6,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {Actions} from "../../modal windows/actons/Actions";
 import {ActionsForPosts} from "../../modal windows/actons/ActionsForPosts";
 
-const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores delectus eius fuga minus officia porro reiciendis, sapiente? Cumque, quae.'
-
 type PropsType = {
     id: string,
     postTitle: string,
@@ -38,7 +36,7 @@ export const Post = (props: PropsType) => {
                     <p>{props.created}</p>
                 </div>
                 <MoreVertIcon onClick={onClickShowActions}/>
-                {showActions && <ActionsForPosts postId={props.id}/>}
+                {showActions && <ActionsForPosts postId={props.id} postTitle={props.postTitle} showActions={showActions} setShowActions={setShowActions} />}
             </div>
         </div>
     );

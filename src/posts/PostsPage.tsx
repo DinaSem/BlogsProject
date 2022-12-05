@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './postsPage.module.css'
 import {Post} from "./post/Post";
 import Button from "@mui/material/Button";
@@ -8,10 +8,12 @@ import {SelectComp} from "../searchPanel/SelectComp";
 import Container from "@mui/material/Container";
 import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
+import {AddPostModal} from "../modal windows/posts modal/add post modal/AddPostModal";
 
 
 export const PostsPage = () => {
     const posts = useAppSelector(state => state.posts.postsData)
+    const[showActions, setShowActions]=useState(false)
 
     const postsComponents = posts.items?.map((p) => <Post key={p.id}
                                                           id={p.id}
@@ -33,7 +35,7 @@ export const PostsPage = () => {
             }
         ))
     }, [dispatch])
-    console.log(posts)
+    // console.log(posts)
 
     return (
         <Container style={{maxWidth: '100%',minHeight: '100vh', }} className={s.wrapper}>
@@ -45,18 +47,19 @@ export const PostsPage = () => {
                 <SelectComp/>
             </div>
             <div style={{display:"flex",justifyContent:"end", margin:"20px 0 "}}>
-                <Button variant="outlined" style={{
-                    width: '153px',
-                    color: "white",
-                    border: '1px solid black',
-                    background: '#F8346B',
-                    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',
-                    borderRadius: '2px'
-                }}
-                        onClick={onClickAddPostHandler}>
-                    {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
-                    Add post
-                </Button>
+                {/*<Button variant="outlined" style={{*/}
+                {/*    width: '153px',*/}
+                {/*    color: "white",*/}
+                {/*    border: '1px solid black',*/}
+                {/*    background: '#F8346B',*/}
+                {/*    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',*/}
+                {/*    borderRadius: '2px'*/}
+                {/*}}*/}
+                {/*        onClick={onClickAddPostHandler}>*/}
+                {/*    /!*onClick={onClickShowMoreHandler} disabled={true}>*!/*/}
+                {/*    Add post*/}
+                {/*</Button>*/}
+                <AddPostModal showActions={showActions} setShowActions={()=>setShowActions(!showActions)} />
             </div>
             <div style={{
                 display: "flex",
