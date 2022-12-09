@@ -14,6 +14,7 @@ import {EditBlog} from "../blogs/blog/editBlog/EditBlog";
 import {CircularProgress} from "@mui/material";
 import {useAppSelector} from "../hooks";
 import {ErrorSnackbar} from "../common/ErrorSnackbar";
+import Login from "../auth/Login";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -25,14 +26,9 @@ const style = {
 export default function App1() {
     //нету запросов
     const status = useAppSelector(state => state.app.status)
+    // const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const isLoggedIn = true;
 
-    // if (!isInitialized) {
-    //     if (isInitialized || ) {
-    //     return <div
-    //         style={{  top: '30%', textAlign: 'center', width: '100%' }}>
-    //         <CircularProgress />
-    //     </div>
-    // }
     return (
 
         <Container className={s.appWrapper} style={{
@@ -42,26 +38,28 @@ export default function App1() {
             <Box style={{
                 display: "flex",
                 justifyContent: "center",
-                minHeight: '100%',
                 boxSizing: "border-box",
                 width: '100%',
                 padding: '63px 0 0 0 ',
-                backgroundColor: '#f6f2f2'
+                backgroundColor: '#f6f2f2',
+                minHeight: '100vh',
             }}>
+                {isLoggedIn &&
+                    <Box style={{
+                        flex: '1 0 auto',
+                        minHeight: '100%',
+                        boxSizing: "border-box",
+                        color: "black",
+                        maxWidth: '20%',
+                        backgroundClip: 'content-box',
+                        position: "relative",
+                        backgroundColor: '#FAF7F8',
+                    }}>
+                        <Navbar/>
 
-                <Box style={{
-                    flex: '1 0 auto',
-                    minHeight: '100%',
-                    boxSizing: "border-box",
-                    color: "black",
-                    maxWidth: '20%',
-                    backgroundClip: 'content-box',
-                    position: "relative",
-                    backgroundColor: '#FAF7F8',
-                }}>
-                    <Navbar/>
+                    </Box>
+                }
 
-                </Box>
                 <Box style={{
                     flex: '5 0 auto',
                     boxSizing: "border-box",
@@ -83,6 +81,7 @@ export default function App1() {
                             <Route path='/addblog/' element={<AddBlog/>}/>
                             <Route path='/editblog/:id/' element={<EditBlog/>}/>
                             <Route path='/post/:id' element={<PostDetails/>}/>
+                            <Route path='/login' element={<Login/>}/>
                         </Routes>
                     </Box>
                 </Box>

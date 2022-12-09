@@ -1,11 +1,9 @@
-import {Dispatch} from "redux";
 import {postsApi, PostsGetResponseDataType, PostType} from "../api/posts-api";
 import {AddBlogACType, fetchBlogDetailsAndPostsTC} from "../blogs/blogs-reducer";
 import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
 import {AppRootStateType, AppThunk} from "../api/store";
 import {AxiosError} from "axios";
 
-// const initialState: Array<BlogsType> = []
 
 const initialState = {
     postsData: {} as PostsGetResponseDataType,
@@ -73,14 +71,14 @@ export const updatePostAC = (id: string, blogId: string, title: string, shortDes
 } as const)
 
 // thunks
-export const fetchPostsTC = (params: { pageNumber?: string; pageSize?: string } = {}): AppThunk => {
-    return (dispatch) => {
-        dispatch(setAppStatusAC('loading'))
-        postsApi.getPosts(params)
-            .then((res) => {
-                dispatch(setPostsAC(res.data))
-                dispatch(setAppStatusAC('succeeded'))
-            })
+export const fetchPostsTC = (params: { pageNumber?: string; pageSize?: string } = {}): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await postsApi.getPosts(params)
+        dispatch(setPostsAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+
     }
 }
 export const fetchPostDetailsTC = (id: string): AppThunk => async dispatch => {
@@ -94,51 +92,48 @@ export const fetchPostDetailsTC = (id: string): AppThunk => async dispatch => {
     }
 }
 
-export const removePostTC = (postId: string): AppThunk => {
-    return (dispatch) => {
-        dispatch(setAppStatusAC('loading'))
-        postsApi.deletePost(postId)
-            .then((res) => {
-                dispatch(removePostAC(postId))
-                dispatch(fetchPostsTC({}))
-                dispatch(setAppStatusAC('succeeded'))
-            })
+export const removePostTC = (postId: string): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await postsApi.deletePost(postId)
+        dispatch(removePostAC(postId))
+        dispatch(fetchPostsTC({}))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
     }
 }
 
-export const addPostTC = (blogId: string, title: string, shortDescription: string, content: string,): AppThunk => {
-    return (dispatch) => {
+export const addPostTC = (blogId: string, title: string, shortDescription: string, content: string,): AppThunk =>
+    async dispatch => {
         dispatch(setAppStatusAC('loading'))
-        postsApi.createPost(blogId, title, shortDescription, content)
-            .then((res) => {
-                dispatch(addPostAC(blogId, title, shortDescription, content))
-                dispatch(fetchPostsTC({}))
-                dispatch(setAppStatusAC('succeeded'))
-            })
-            .catch((e=>{
-
-        }))
+        try {
+            const res = await postsApi.createPost(blogId, title, shortDescription, content)
+            dispatch(addPostAC(blogId, title, shortDescription, content))
+            dispatch(fetchPostsTC({}))
+            dispatch(setAppStatusAC('succeeded'))
+            // @ts-ignore
+        } catch (e: AxiosError<{ errorsMessages: Array<{ field: string, message: string }> }>) {
+            dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
+            dispatch(setAppStatusAC('failed'))
+        }
     }
-}
-export const changePostTC = (id: string, title: string, shortDescription: string, content: string): AppThunk => {
-    return (dispatch, getState: () => AppRootStateType) => {
+export const changePostTC = (id: string, title: string, shortDescription: string, content: string): AppThunk =>
+    async (dispatch, getState: () => AppRootStateType) => {
         const blogId = getState().blogs.currentBlogId
         dispatch(setAppStatusAC('loading'))
-        postsApi.updatePost(id, blogId, title, shortDescription, content,)
-            .then((res) => {
-                dispatch(updatePostAC(id, blogId, title, shortDescription, content))
-                console.log('все ок', res.data)
-                dispatch(fetchBlogDetailsAndPostsTC(blogId))
-                dispatch(setAppStatusAC('succeeded'))
-            })
+        try {
+            const res = await postsApi.updatePost(id, blogId, title, shortDescription, content,)
+            dispatch(updatePostAC(id, blogId, title, shortDescription, content))
+            dispatch(fetchBlogDetailsAndPostsTC(blogId))
+            dispatch(setAppStatusAC('succeeded'))
+        }
             // .catch((e: AxiosError<{errorsMessages: Array<{field: string, message:string}>}>)=>{
-            .catch((e)=>{
-                    dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
-                dispatch(setAppStatusAC('failed'))
-                }
-            )
+            // @ts-ignore
+        catch (e: AxiosError<{ errorsMessages: Array<{ field: string, message: string }> }>) {
+            dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
+            dispatch(setAppStatusAC('failed'))
+        }
     }
-}
 
 // types
 type InitialStateType = typeof initialState
@@ -158,4 +153,3 @@ export type PostsActionsType =
     | UpdatePostACType
     | StatusActionsType
 
-type ThunkDispatch = Dispatch<PostsActionsType>

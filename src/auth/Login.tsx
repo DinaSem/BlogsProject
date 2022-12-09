@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useFormik} from 'formik';
+import authpicture from '../pictures/auth.png'
 
 import {Navigate, NavLink} from 'react-router-dom';
 import {
@@ -17,6 +18,7 @@ import {
 } from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../hooks";
+import Box from "@mui/material/Box";
 
 
 
@@ -76,9 +78,9 @@ const Login = () => {
         // return <Navigate to={PROFILE}/>
     }
     return (
-        <Grid container justifyContent={'center'}>
-            <Grid item marginTop={'50px'} textAlign={"center"} width={"400px"}>
-                <Paper elevation={14} style={{padding: "30px", height:"430px"}} >
+        <Box style={{display:"flex",  justifyContent:'space-around', marginTop:"75px"}}>
+            <Grid  width={"378px"}>
+                <Paper elevation={14} style={{padding: "30px", height:"392px"}} >
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl fullWidth>
                             <FormLabel style={{textAlign: "center"}}>
@@ -135,7 +137,10 @@ const Login = () => {
                     </form>
                 </Paper>
             </Grid>
-        </Grid>
+            <Box>
+                <img src={authpicture} alt="" style={{width:'632px', height:'433.64px'}}/>
+            </Box>
+        </Box>
     )
 }
 
