@@ -13,6 +13,7 @@ import {BasicModal} from "../modal windows/basic modal/BasicModal";
 import {useNavigate} from "react-router-dom";
 
 export default function BlogsPage() {
+    //у нас рисуются блоги от запроса на сервер
     const pageNumber = useAppSelector(state => state.blogs.pageNumber)
     const pageSize = useAppSelector(state => state.blogs.pageSize)
     const searchNameTerm = useAppSelector(state => state.blogs.searchNameTerm)
@@ -33,13 +34,10 @@ export default function BlogsPage() {
         setCurrentPage(currentPage+1)
     }
     const onClickAddBlogHandler = () => {
-      // dispatch(addBlogTC('ABlog5 Blog5', 'Очень-очень интересный блог с каким-то контентом', 'www.rutube.ru'))
-      //   dispatch(fetchBlogsTC({}))
-
             navigate(`addblog`)
 
     }
-    console.log(searchNameTerm)
+
     useEffect(() => {
         dispatch(fetchBlogsTC({
                 pageNumber:currentPage,

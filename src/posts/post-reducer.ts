@@ -1,6 +1,9 @@
 import {Dispatch} from "redux";
 import {postsApi, PostsGetResponseDataType, PostType} from "../api/posts-api";
-import {AddBlogACType} from "../blogs/blogs-reducer";
+import {AddBlogACType, fetchBlogDetailsAndPostsTC} from "../blogs/blogs-reducer";
+import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
+import {AppRootStateType, AppThunk} from "../api/store";
+import {AxiosError} from "axios";
 
 // const initialState: Array<BlogsType> = []
 
@@ -13,8 +16,7 @@ const initialState = {
 
 }
 
-// export const blogsReducer = (state: Array<BlogsType> = initialState, action: ActionsType): Array<BlogsType> => {
-export const postsReducer = (state: InitialStateType = initialState, action: BlogsActionsType): InitialStateType => {
+export const postsReducer = (state: InitialStateType = initialState, action: PostsActionsType): InitialStateType => {
     switch (action.type) {
         case "POSTS/SET-POSTS":
             return {...state, postsData: action.postsData}
@@ -27,9 +29,23 @@ export const postsReducer = (state: InitialStateType = initialState, action: Blo
                 }
             }
         case "BLOGS/ADD-BLOG":
-            return {...state,[action.blog.id]:[]}
+            return {...state, [action.blog.id]: []}
         case "POSTS/ADD-POST":
-            return {...state,[action.post.blogId]:[action.post, ...state.postsData.items]}
+            return {...state, [action.blogId]: [state, ...state.postsData.items]}
+        case "POSTS/UPDATE-POST":
+            return {
+
+                ...state, postsData: {
+                    ...state.postsData,
+                    items: state.postsData.items.map(p => p.id === action.id ? {
+                        ...p,
+                        // ...action.data
+                        title: action.title,
+                        shortDescription: action.shortDescription,
+                        content: action.content
+                    } : p)
+                }
+            }
         default:
             return state
     }
@@ -40,65 +56,89 @@ export const postsReducer = (state: InitialStateType = initialState, action: Blo
 export const setPostsAC = (postsData: PostsGetResponseDataType) => ({type: 'POSTS/SET-POSTS', postsData} as const)
 export const setPostDetailsAC = (post: PostType, id: string) => ({type: 'POSTS/SET-POST-DETAILS', post, id} as const)
 export const removePostAC = (postId: string) => ({type: 'POSTS/REMOVE-POST', postId} as const)
-export const addPostAC = (post: PostType) => ({type: 'POSTS/ADD-POST', post} as const)
+export const addPostAC = (blogId: string, title: string, shortDescription: string, content: string) => ({
+    type: 'POSTS/ADD-POST',
+    blogId,
+    title,
+    shortDescription,
+    content
+} as const)
+export const updatePostAC = (id: string, blogId: string, title: string, shortDescription: string, content: string) => ({
+    type: 'POSTS/UPDATE-POST',
+    id,
+    blogId,
+    title,
+    shortDescription,
+    content
+} as const)
 
 // thunks
-export const fetchPostsTC = (params: { pageNumber?: string; pageSize?: string }) => {
-    return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
+export const fetchPostsTC = (params: { pageNumber?: string; pageSize?: string } = {}): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         postsApi.getPosts(params)
             .then((res) => {
                 dispatch(setPostsAC(res.data))
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
-export const fetchPostDetailsTC = (id: string) => {
-    return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
-        postsApi.getPostDetails(id)
-            .then((res) => {
-                dispatch(setPostDetailsAC(res.data, id))
-                console.log('postDetail', res.data.items)
-                // dispatch(setAppStatusAC('succeeded'))
-            })
+export const fetchPostDetailsTC = (id: string): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await postsApi.getPostDetails(id)
+        dispatch(setPostDetailsAC(res.data, id))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+
     }
 }
 
-export const removePostTC = (postId: string) => {
-    return (dispatch: ThunkDispatch) => {
-        //изменим глобальный статус приложения, чтобы вверху полоса побежала
-        // dispatch(setAppStatusAC('loading'))
-        //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
-        // dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
+export const removePostTC = (postId: string): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         postsApi.deletePost(postId)
             .then((res) => {
                 dispatch(removePostAC(postId))
-                //скажем глобально приложению, что асинхронная операция завершена
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(fetchPostsTC({}))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 
-export const addPostTC = (blogId: string,title: string, shortDescription: string, content: string,) => {
-    return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
-        postsApi.createPost(blogId,title,shortDescription,content)
+export const addPostTC = (blogId: string, title: string, shortDescription: string, content: string,): AppThunk => {
+    return (dispatch) => {
+        dispatch(setAppStatusAC('loading'))
+        postsApi.createPost(blogId, title, shortDescription, content)
             .then((res) => {
-                dispatch(addPostAC(res.data.items))
-                console.log(res.data.items)
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(addPostAC(blogId, title, shortDescription, content))
+                dispatch(fetchPostsTC({}))
+                dispatch(setAppStatusAC('succeeded'))
             })
+            .catch((e=>{
+
+        }))
     }
 }
-// export const changeTodolistTitleTC = (id: string, title: string) => {
-//     return (dispatch: Dispatch<ActionsType>) => {
-//         todolistsAPI.updateTodolist(id, title)
-//             .then((res) => {
-//                 dispatch(changeTodolistTitleAC(id, title))
-//             })
-//     }
-// }
+export const changePostTC = (id: string, title: string, shortDescription: string, content: string): AppThunk => {
+    return (dispatch, getState: () => AppRootStateType) => {
+        const blogId = getState().blogs.currentBlogId
+        dispatch(setAppStatusAC('loading'))
+        postsApi.updatePost(id, blogId, title, shortDescription, content,)
+            .then((res) => {
+                dispatch(updatePostAC(id, blogId, title, shortDescription, content))
+                console.log('все ок', res.data)
+                dispatch(fetchBlogDetailsAndPostsTC(blogId))
+                dispatch(setAppStatusAC('succeeded'))
+            })
+            // .catch((e: AxiosError<{errorsMessages: Array<{field: string, message:string}>}>)=>{
+            .catch((e)=>{
+                    dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
+                dispatch(setAppStatusAC('failed'))
+                }
+            )
+    }
+}
 
 // types
 type InitialStateType = typeof initialState
@@ -106,19 +146,16 @@ export type SetBlogsType = ReturnType<typeof setPostsAC>;
 export type SetBlogDetailsType = ReturnType<typeof setPostDetailsAC>;
 export type RemovePostACType = ReturnType<typeof removePostAC>;
 export type AddPostACType = ReturnType<typeof addPostAC>;
+export type UpdatePostACType = ReturnType<typeof updatePostAC>;
 
 
-export type BlogsActionsType =
+export type PostsActionsType =
     | SetBlogsType
     | SetBlogDetailsType
     | RemovePostACType
     | AddBlogACType
     | AddPostACType
+    | UpdatePostACType
+    | StatusActionsType
 
-// export type FilterValuesType = 'all' | 'active' | 'completed';
-// export type TodolistDomainType = TodolistType & {
-//     filter: FilterValuesType
-//     entityStatus: RequestStatusType
-// }
-type ThunkDispatch = Dispatch<BlogsActionsType>
-// | SetAppStatusActionType>
+type ThunkDispatch = Dispatch<PostsActionsType>

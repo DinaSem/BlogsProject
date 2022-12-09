@@ -6,19 +6,19 @@ import Box from "@mui/material/Box";
 import {useFormik} from "formik";
 import image from '../../../pictures/noimage.jpg'
 import {addPostTC} from "../../../posts/post-reducer";
+import {BlogType} from "../../../api/blogs-api";
+import {PostType} from "../../../api/posts-api";
 
 
 type PropsType = {
-    // postId: string
-    // postTitle:string
-    showActions:boolean
-    setShowActions:(showActions:boolean)=>void
+    blogs: BlogType[]
+
 }
 
 
-export const AddPostModal = ({showActions,setShowActions}: PropsType) => {
-    const blogs = useAppSelector(state => state.blogs.blogsData.items)
-    const blogsNames = blogs.map(b => b.name)
+export const AddPostModal = ({blogs}: PropsType) => {
+   // const blogs = useAppSelector(state => state.blogs.blogsData.items)
+    const blogsNames = blogs?.map(b => b.name)
     const [value, setValue] = React.useState<string>(blogsNames[0])
     const [inputValue, setInputValue] = React.useState('');
     const currentBlog = blogs.find(b=>b.name===value)
@@ -102,6 +102,7 @@ export const AddPostModal = ({showActions,setShowActions}: PropsType) => {
                         <Autocomplete
                             value={value}
                             // @ts-ignore
+                            // const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
                             onChange={(event: any, newValue: string) => {
                                return setValue(newValue);
                             }}

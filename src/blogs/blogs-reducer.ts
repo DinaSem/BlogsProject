@@ -7,6 +7,7 @@ import {
 } from "../api/blogs-api";
 import {Dispatch} from "redux";
 import {PostsGetResponseDataType, PostType} from "../api/posts-api";
+import {setAppStatusAC, StatusActionsType} from "../app/app-reducer";
 
 // const initialState: Array<BlogsType> = []
 
@@ -20,7 +21,7 @@ const initialState = {
     sortDirection: 'desc',
     blog: {} as BlogType,
     blogsPostsData: {} as BlogsPostsGetResponseDataType,
-
+    currentBlogId: ''
 }
 
 // export const blogsReducer = (state: Array<BlogsType> = initialState, action: ActionsType): Array<BlogsType> => {
@@ -59,6 +60,8 @@ export const blogsReducer = (state: InitialStateType = initialState, action: Blo
             return {...state, sortDirection: action.sortDirection}
         case "BLOGS/SORT-BY-BLOG":
             return {...state, sortBy: action.sortBy}
+        case "BLOGS/SET-BLOG-ID":
+            return {...state, currentBlogId: action.blogId}
         default:
             return state
     }
@@ -90,52 +93,56 @@ export const sortByBlogsAC = (sortBy: string) => ({
     type: 'BLOGS/SORT-BY-BLOG',
     sortBy
 } as const)
+export const setCurrentBlogIdAC = (blogId: string) => ({
+    type: 'BLOGS/SET-BLOG-ID',
+    blogId
+} as const)
 
 // thunks
 export const fetchBlogsTC = (params: { searchNameTerm?: string, pageNumber?: number, pageSize?: number, sortBy?: string, sortDirection?: string }) => {
     return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         blogsApi.getBlogs(params)
             .then((res) => {
                 dispatch(setBlogsAC(res.data))
                 // console.log(res.data.items)
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
+
     }
 }
 export const fetchBlogDetailsTC = (id: string) => {
     return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         blogsApi.getBlogDetail(id)
             .then((res) => {
-                // console.log('RESULT BY BLOG:', res.data)
+
                 dispatch(setBlogDetailsAC(res.data, id))
                 // console.log(res.data.items)
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
-// export const fetchBlogDetailsAndPostsTC = (id: string, params: { searchNameTerm?: string, pageNumber?: string, pageSize?: string, sortBy?: string, sortDirection?: string }) => {
 export const fetchBlogDetailsAndPostsTC = (id: string) => {
     return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         blogsApi.getBlogsPosts(id)
             .then((res) => {
                 // console.log('RESULT BY BLOG:', res.data)
                 dispatch(setBlogsPostsAC(res.data, id))
                 // console.log('BLOGS-POSTS', res.data.items)
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 export const addBlogTC = (name: string, description: string, websiteUrl: string) => {
     return (dispatch: ThunkDispatch) => {
-        // dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         blogsApi.createBlog(name, description, websiteUrl)
             .then((res) => {
                 // console.log('RESULT BY BLOG:', res.data)
                 dispatch(addBlogAC(res.data.item))
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
@@ -143,23 +150,25 @@ export const addBlogTC = (name: string, description: string, websiteUrl: string)
 export const removeBlogTC = (id: string) => {
     return (dispatch: ThunkDispatch) => {
         //изменим глобальный статус приложения, чтобы вверху полоса побежала
-        // dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
         // dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
         blogsApi.deleteBlog(id)
             .then((res) => {
                 dispatch(removeBlogAC(id))
                 //скажем глобально приложению, что асинхронная операция завершена
-                // dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 
 export const changeBlogTC = (blogId: string, name?: string, websiteUrl?: string, description?: string) => {
     return (dispatch: ThunkDispatch) => {
+        dispatch(setAppStatusAC('loading'))
         blogsApi.updateBlog(blogId, name, websiteUrl, description)
             .then((res) => {
                 dispatch(changeBlogAC(blogId, name, websiteUrl, description))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
@@ -175,6 +184,7 @@ export type RemoveBlogACType = ReturnType<typeof removeBlogAC>;
 export type ChangeBlogACType = ReturnType<typeof changeBlogAC>;
 export type SortDirectionType = ReturnType<typeof sortDirectionBlogsAC>;
 export type SortByBlogsType = ReturnType<typeof sortByBlogsAC>;
+export type SetCurrentBlogIdACType = ReturnType<typeof setCurrentBlogIdAC>;
 
 export type BlogsActionsType =
     | SetBlogsType
@@ -186,6 +196,9 @@ export type BlogsActionsType =
     | ChangeBlogACType
     | SortDirectionType
     | SortByBlogsType
+    | SetCurrentBlogIdACType
+    | StatusActionsType
+
 
 // export type FilterValuesType = 'all' | 'active' | 'completed';
 // export type TodolistDomainType = TodolistType & {

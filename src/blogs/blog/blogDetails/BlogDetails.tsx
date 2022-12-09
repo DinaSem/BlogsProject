@@ -6,35 +6,43 @@ import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {Post} from "../../../posts/post/Post";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
-import {fetchBlogDetailsAndPostsTC, fetchBlogDetailsTC} from "../../blogs-reducer";
-import { useParams } from 'react-router-dom';
+import {fetchBlogDetailsAndPostsTC, fetchBlogDetailsTC, fetchBlogsTC} from "../../blogs-reducer";
+import {useParams} from 'react-router-dom';
+import {fetchPostsTC} from "../../../posts/post-reducer";
 
-const someText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aspernatur distinctio doloremque, eum facilis fuga, fugiat harum hic id ipsa iste iusto odio odit officiis omnis perspiciatis possimus praesentium rerum sed sequi suscipit tenetur totam unde. Amet at cupiditate dicta distinctio eveniet fuga hic impedit iusto natus neque nihil nisi, odio quas quo, quod sint veritatis! Ab assumenda debitis dolores error hic id illum ipsam nesciunt nisi officia quae quaerat quas quisquam reiciendis rem repellendus sequi tempore totam, ut voluptatibus! Aperiam dicta esse eum ipsa quisquam sit veniam voluptas. Ad aspernatur deleniti dolores, facilis modi non pariatur quibusdam veritatis vero!'
 
 export const BlogDetails = () => {
     const [fullText, setFulText] = useState(false)
     const {id} = useParams()
-    // console.log('BLOG DETAILS (ID): ',id)
-    // const {blogId} = useParams<{blogId?:string|undefined}>()
     const dispatch = useAppDispatch()
     const blog = useAppSelector(state => state.blogs.blog)
     const postsOfBlogs = useAppSelector(state => state.blogs.blogsPostsData)
+    const blogs = useAppSelector(state => state.blogs.blogsData.items)
+
+    console.log('Blogs: ', blogs)
 
     const postsComponents = postsOfBlogs.items?.map((p) => <Post key={p.id}
-                                                          id={p.id}
-                                                          postTitle={p.title}
-                                                          blogName={p.blogName}
-                                                          created={p.createdAt}/>)
+                                                                 id={p.id}
+                                                                 postTitle={p.title}
+                                                                 blogName={p.blogName}
+                                                                 created={p.createdAt} content={p.content}
+                                                                 shortDescription={p.shortDescription} blogs={blogs}/>)
+
 
     useEffect(() => {
-        if(id){
+        if (id) {
             dispatch(fetchBlogDetailsTC(id))
             dispatch(fetchBlogDetailsAndPostsTC(id))
 
         }
-    }, [dispatch, id])
+    }, [dispatch, id,])
 
-    // console.log('blog',blog)
+    useEffect(() => {
+        dispatch(fetchBlogsTC({}))
+        dispatch(fetchPostsTC())
+    }, [])
+
+    console.log('ID: ', id)
 
     return (
         <div className={s.blogsDetailsWrapper}>

@@ -1,20 +1,38 @@
 import * as React from 'react';
 import s from './App1.module.css'
 import {Route, Routes} from "react-router-dom";
-import BlogsPage from "./blogs/BlogsPage";
-import {PostsPage} from "./posts/PostsPage";
-import Header from "./header/Header";
+import BlogsPage from "../blogs/BlogsPage";
+import {PostsPage} from "../posts/PostsPage";
+import Header from "../header/Header";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import {BlogDetails} from "./blogs/blog/blogDetails/BlogDetails";
-import Navbar from "./navbar/Navbar";
-import {PostDetails} from "./posts/post/postDetails/PostDetails";
-import {AddBlog} from "./blogs/blog/addBlog/AddBlog";
-import {EditBlog} from "./blogs/blog/editBlog/EditBlog";
+import {BlogDetails} from "../blogs/blog/blogDetails/BlogDetails";
+import Navbar from "../navbar/Navbar";
+import {PostDetails} from "../posts/post/postDetails/PostDetails";
+import {AddBlog} from "../blogs/blog/addBlog/AddBlog";
+import {EditBlog} from "../blogs/blog/editBlog/EditBlog";
+import {CircularProgress} from "@mui/material";
+import {useAppSelector} from "../hooks";
+import {ErrorSnackbar} from "../common/ErrorSnackbar";
 
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
 
+}
 export default function App1() {
+    //нету запросов
+    const status = useAppSelector(state => state.app.status)
 
+    // if (!isInitialized) {
+    //     if (isInitialized || ) {
+    //     return <div
+    //         style={{  top: '30%', textAlign: 'center', width: '100%' }}>
+    //         <CircularProgress />
+    //     </div>
+    // }
     return (
 
         <Container className={s.appWrapper} style={{
@@ -42,6 +60,7 @@ export default function App1() {
                     backgroundColor: '#FAF7F8',
                 }}>
                     <Navbar/>
+
                 </Box>
                 <Box style={{
                     flex: '5 0 auto',
@@ -49,18 +68,21 @@ export default function App1() {
                     maxWidth: '80%',
                     backgroundClip: 'content-box',
                 }}>
+
                     <Box component="main"
                          style={{
                              backgroundColor: '#f6f2f2',
-                             width: '100%'
+                             width: '100%',
                          }}>
+                        {status==='loading' && <CircularProgress color="secondary" sx={style}/>}
+                        <ErrorSnackbar/>
                         <Routes>
                             <Route path='/' element={<BlogsPage/>}/>
                             <Route path='/posts/' element={<PostsPage/>}/>
                             <Route path='blog/:id' element={<BlogDetails/>}/>
                             <Route path='/addblog/' element={<AddBlog/>}/>
                             <Route path='/editblog/:id/' element={<EditBlog/>}/>
-                            <Route path='posts/post/:id' element={<PostDetails/>}/>
+                            <Route path='/post/:id' element={<PostDetails/>}/>
                         </Routes>
                     </Box>
                 </Box>

@@ -9,23 +9,37 @@ import Container from "@mui/material/Container";
 import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {AddPostModal} from "../modal windows/posts modal/add post modal/AddPostModal";
+import {fetchBlogsTC} from "../blogs/blogs-reducer";
 
 
 export const PostsPage = () => {
+    //посты рисуются от запроса на сервер
+    //но прикол в том что посты зависят от блогов
+    //т если мы перезагрузимся то блоги будут пустые данных не будет
+    //нам надо надо позаботиться о данных
+    //если их нету надо сделать запрос
+
+    //если они есть то запрос игнорим
+
     const posts = useAppSelector(state => state.posts.postsData)
-    const[showActions, setShowActions]=useState(false)
+    const blogs = useAppSelector(state => state.blogs.blogsData.items)
+    console.log('BLOGS: ,', blogs)
+
+    useEffect(() => {
+        if (blogs && blogs.length > 0) return
+        dispatch(fetchBlogsTC({}))
+            }, [])
+    const [showActions, setShowActions] = useState(false)
 
     const postsComponents = posts.items?.map((p) => <Post key={p.id}
                                                           id={p.id}
                                                           postTitle={p.title}
                                                           blogName={p.blogName}
-                                                          created={p.createdAt}/>)
+                                                          created={p.createdAt} content={p.content}
+                                                          shortDescription={p.shortDescription} blogs={blogs}/>)
 
     const dispatch = useAppDispatch()
-    const onClickAddPostHandler = () => {
-        dispatch(addPostTC('638a0495ef27e52f30326c08','new post3', 'new description for new post', 'new content for new post'))
-        dispatch(fetchPostsTC({}))
-    }
+
 
     useEffect(() => {
         dispatch(fetchPostsTC({
@@ -38,29 +52,17 @@ export const PostsPage = () => {
     // console.log(posts)
 
     return (
-        <Container style={{maxWidth: '100%',minHeight: '100vh', }} className={s.wrapper}>
+        <Container style={{maxWidth: '100%', minHeight: '100vh',}} className={s.wrapper}>
 
             <h2>Posts</h2>
 
-            <div style={{display: 'flex', margin:'30px 0'}}>
+            <div style={{display: 'flex', margin: '30px 0'}}>
                 <Search/>
                 <SelectComp/>
             </div>
-            <div style={{display:"flex",justifyContent:"end", margin:"20px 0 "}}>
-                {/*<Button variant="outlined" style={{*/}
-                {/*    width: '153px',*/}
-                {/*    color: "white",*/}
-                {/*    border: '1px solid black',*/}
-                {/*    background: '#F8346B',*/}
-                {/*    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35',*/}
-                {/*    borderRadius: '2px'*/}
-                {/*}}*/}
-                {/*        onClick={onClickAddPostHandler}>*/}
-                {/*    /!*onClick={onClickShowMoreHandler} disabled={true}>*!/*/}
-                {/*    Add post*/}
-                {/*</Button>*/}
-                <AddPostModal showActions={showActions} setShowActions={()=>setShowActions(!showActions)} />
-            </div>
+            {blogs && blogs.length > 0 && <div style={{display: "flex", justifyContent: "end", margin: "20px 0 "}}>
+                <AddPostModal blogs={blogs}/>
+            </div>}
             <div style={{
                 display: "flex",
                 gap: '20px',

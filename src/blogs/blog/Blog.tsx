@@ -4,6 +4,8 @@ import image from '../../pictures/noimage.jpg'
 import {useNavigate} from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Actions} from "../../modal windows/actons/Actions";
+import {setCurrentBlogIdAC} from "../blogs-reducer";
+import {useAppDispatch} from "../../hooks";
 
 type PropsType={
     blogName:string,
@@ -15,14 +17,18 @@ type PropsType={
 export const Blog = (props:PropsType) => {
     const[showActions, setShowActions]=useState(false)
 
-
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+
     const navigateByBlog = () => {
         navigate(`blog/${props.id}`)
+        //записываю в стейт текущий id блога
+        dispatch(setCurrentBlogIdAC(props.id))
     }
     const onClickShowActions = () => {
         setShowActions(!showActions)
     }
+
 
     return (
         <div className={s.wrapper}>

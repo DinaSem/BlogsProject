@@ -5,12 +5,16 @@ import {useNavigate} from 'react-router-dom';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {Actions} from "../../modal windows/actons/Actions";
 import {ActionsForPosts} from "../../modal windows/actons/ActionsForPosts";
+import {BlogType} from "../../api/blogs-api";
 
 type PropsType = {
     id: string,
     postTitle: string,
     blogName: string
     created: string
+    content:string
+    shortDescription:string
+    blogs:BlogType[]
 }
 
 export const Post = (props: PropsType) => {
@@ -21,7 +25,7 @@ export const Post = (props: PropsType) => {
     }
 
     const navigateByPost = () => {
-        navigate(`post/${props.id}`)
+        navigate(`/post/${props.id}/`)
     }
     return (
         <div className={s.postWrapper} >
@@ -36,7 +40,14 @@ export const Post = (props: PropsType) => {
                     <p>{props.created}</p>
                 </div>
                 <MoreVertIcon onClick={onClickShowActions}/>
-                {showActions && <ActionsForPosts postId={props.id} postTitle={props.postTitle} showActions={showActions} setShowActions={setShowActions} />}
+                {showActions && <ActionsForPosts postId={props.id}
+                                                 postTitle={props.postTitle}
+                                                 showActions={showActions}
+                                                 setShowActions={setShowActions}
+                                                 content={props.content}
+                                                 shortDescription={props.shortDescription}
+                                                 blogs={props.blogs}
+                                                 blogName={props.blogName}/>}
             </div>
         </div>
     );

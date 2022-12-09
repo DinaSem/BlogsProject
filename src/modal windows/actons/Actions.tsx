@@ -26,7 +26,7 @@ export const Actions = (props: PropsType) => {
             <DeleteBlogModal blogId={props.blogId} blogName={props.blogName} showActions={props.showActions} setShowActions={props.setShowActions}/>
             <Link to={`/editblog/${props.blogId}`}>
                 <div style={{cursor: 'pointer'}}>
-                    <EditOutlinedIcon style={{margin: '-4px 4px'}}/>
+                    <EditOutlinedIcon style={{margin: '-4px 4px'}} />
                     Edit
                 </div>
             </Link>

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import s from './App.module.css'
 import {Route, Routes} from "react-router-dom";
-import BlogsPage from "./blogs/BlogsPage";
-import {PostsPage} from "./posts/PostsPage";
-import Navbar from "./navbar/Navbar";
-import Header from "./header/Header";
+import BlogsPage from "../blogs/BlogsPage";
+import {PostsPage} from "../posts/PostsPage";
+import Navbar from "../navbar/Navbar";
+import Header from "../header/Header";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import {Blog} from "./blogs/blog/Blog";
-import {BlogDetails} from "./blogs/blog/blogDetails/BlogDetails";
+import {Blog} from "../blogs/blog/Blog";
+import {BlogDetails} from "../blogs/blog/blogDetails/BlogDetails";
 import {BreakfastDining} from "@mui/icons-material";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 

@@ -20,8 +20,15 @@ export const postsApi = {
         return instance.delete(`posts/${postId}`);
     },
     createPost(blogId:string, title: string, shortDescription: string, content: string,) {
-        return instance.post(`blogs/${blogId}/posts`, {title,shortDescription,content});
+        return instance.post(`posts`, {blogId,title,shortDescription,content});
     },
+    updatePost(postId:string, blogId:string,title: string, shortDescription: string, content: string,) {
+        return instance.put<{postId:string, blogId:string,title: string, shortDescription: string, content: string},AxiosResponse<ResponseType<{ item: PostType }>>>(`posts/${postId}`, {blogId,title,shortDescription,content});
+    }
+
+    // createPost(blogId:string, title: string, shortDescription: string, content: string,) {
+    //     return instance.post(`blogs/${blogId}/posts`, {title,shortDescription,content});
+    // },
 
     // updateTodolist(id: string, title: string) {
     //     return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title});
@@ -105,19 +112,16 @@ export type PostType = {
 //     ]
 // }
 
-// export type TodolistType = {
-//     id: string
-//     title: string
-//     addedDate: string
-//     order: number
-// }
-// export type ResponseType<D = {}> = {
-//     resultCode: number
-//     messages: Array<string>
-//     fieldsErrors: Array<string>
-//     data: D
-// }
-//
+export type ResponseType<D = {}> = {
+    "errorsMessages": [
+        {
+            "message": "string",
+            "field": "string"
+        }
+    ],
+    data: D
+}
+//}
 //
 // export enum TaskStatuses {
 //     New = 0,
