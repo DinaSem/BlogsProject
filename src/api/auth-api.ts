@@ -1,68 +1,57 @@
+import axios, {AxiosResponse} from 'axios';
 
-import {AxiosResponse} from 'axios';
-import axios from "axios/index";
 
 
 const instance = axios.create({
     baseURL: 'https://nest12.onrender.com/',
-    headers: {
-        'Authorization': 'Basic YWRtaW46cXdlcnR5'
-    }
+    // headers: {
+    //     'Authorization': 'Basic YWRtaW46cXdlcnR5'
+    // }
 })
 
 // api
 export const authAPI = {
-    register(data: RegisterDataType) {
-        return instance.post<RegisterDataType, AxiosResponse<RegisterResponseType>>
-        ('auth/registeration', data)
-    },
+    // register(data: RegisterDataType) {
+    //     // return instance.post<RegisterDataType, AxiosResponse<RegisterResponseType>>
+    //     return instance.post('auth/registeration', data)
+    // },
     login(data: LoginDataType) {
-        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('/auth/login', data)
+        return instance.post<LoginDataType,AxiosResponse<LoginResponseType>>('auth/login', data)
     },
     logout() {
-        return instance.post<{},AxiosResponse<{info:string}>>('/auth/me')
+        // return instance.post<{},AxiosResponse<{info:string}>>('/auth/me')
+        return instance.post('/auth/logout')
     },
-    me() {
-        return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
-    },
-    passwordRecovery(data:RecoveryPasswordDataType){
-        return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('auth/forgot', data)
-    },
-    setNewPassword(data: SetNewPasswordType){
-        return instance.post<SetNewPasswordType, AxiosResponse<ResponseType>>('/auth/set-new-password', data)
-    },
-    changeProfile(name: string, avatar: string) {
-        return instance.put('auth/me', {name, avatar})
-    }
+    // me() {
+    //     // return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
+    //     return instance.get('/auth/me')
+    // },
+    // passwordRecovery(data:RecoveryPasswordDataType){
+    //     return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('auth/forgot', data)
+    // },
+    // setNewPassword(data: SetNewPasswordType){
+    //     return instance.post<SetNewPasswordType, AxiosResponse<ResponseType>>('/auth/set-new-password', data)
+    // },
+    // changeProfile(name: string, avatar: string) {
+    //     return instance.put('auth/me', {name, avatar})
+    // }
 
 }
 // types
 export type LoginDataType = {
-    email: string
+    loginOrEmail: string
     password: string
-    rememberMe: boolean
 }
 
 export type LoginResponseType = {
-    avatar?: string
-    created: string
-    email: string
-    isAdmin: boolean
-    name: string
-    publicCardPacksCount: number
-    rememberMe: boolean
-    token: string
-    tokenDeathTime: number
-    updated: string
-    verified: boolean
-    __v: number
-    _id: string
+    accessToken: string
 }
 
-export type RegisterDataType = {
-    email: string,
-    password: string
-}
+// export type RegisterDataType = {
+//     login:string,
+//     password: string
+//     email: string,
+// }
 
 export type RegisterResponseType = {
     addedUser:any,
@@ -95,8 +84,6 @@ export type ProfileType = {
     created: Date
     updated: Date
     isAdmin: boolean
-    verified: boolean // подтвердил ли почту
-    rememberMe: boolean
     error?: string
 }
 

@@ -1,5 +1,5 @@
 import {blogsApi, BlogsGetResponseDataType, BlogsPostsGetResponseDataType, BlogType,} from "../api/blogs-api";
-import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC, setAppSuccessAC, StatusActionsType} from "../app/app-reducer";
 import {AppThunk} from "../api/store";
 import axios, {AxiosError} from "axios";
 import {ErrorsMessagesType} from "../api/posts-api";
@@ -153,6 +153,8 @@ export const addBlogTC = (name: string, description: string, websiteUrl: string)
         const res = await blogsApi.createBlog(name, description, websiteUrl)
                 dispatch(addBlogAC(res.data.item))
                 dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppSuccessAC('Blog has added'))
+
     }
     catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
@@ -172,6 +174,7 @@ export const removeBlogTC = (id: string):AppThunk => async dispatch => {
             await blogsApi.deleteBlog(id)
                 dispatch(removeBlogAC(id))
                 dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppSuccessAC('Blog has deleted'))
     }
     catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
@@ -192,6 +195,8 @@ export const changeBlogTC = (blogId: string, name?: string, websiteUrl?: string,
             await blogsApi.updateBlog(blogId, name, websiteUrl, description)
                     dispatch(changeBlogAC(blogId, name, websiteUrl, description))
                     dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppSuccessAC('Blog has updated'))
+
     }
     catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>

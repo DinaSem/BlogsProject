@@ -23,7 +23,7 @@ export const PostsPage = () => {
 
     const posts = useAppSelector(state => state.posts.postsData)
     const blogs = useAppSelector(state => state.blogs.blogsData.items)
-    console.log('BLOGS: ,', blogs)
+
 
     useEffect(() => {
         if (blogs && blogs.length > 0) return

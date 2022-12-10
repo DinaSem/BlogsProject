@@ -5,9 +5,7 @@ import authpicture from '../pictures/auth.png'
 import {Navigate, NavLink} from 'react-router-dom';
 import {
     Button,
-    Checkbox,
     FormControl,
-    FormControlLabel,
     FormGroup,
     FormLabel,
     Grid,
@@ -19,27 +17,27 @@ import {
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import Box from "@mui/material/Box";
-
+import {changePasswordRecoveryStatusAC, loginTC} from "./auth-reducer";
 
 
 type FormikErrorType = {
-    email?: string
+    loginOrEmail?: string
     password?: string
-    rememberMe?: boolean
 }
 type FormikValuesType = {
-    email?: string
+    loginOrEmail?: string
     password?: string
-    rememberMe?: boolean
 }
 
 const Login = () => {
     const dispatch = useAppDispatch()
+
     useEffect(()=>{
         // dispatch(changePasswordRecoveryStatusAC(false,""))
     },[])
-    // const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const isLoggedIn = false;
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const errorFromServer = useAppSelector(state => state.app.error)
+
     const [showPassword, setShowPassword] = useState(false)
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
@@ -49,33 +47,42 @@ const Login = () => {
     };
     const validate = (values: FormikValuesType) => {
         const errors: FormikErrorType = {};
-        if (!values.email) {
-            errors.email = 'Required';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            errors.email = 'Invalid email address';
+        if (!values.loginOrEmail) {
+            errors.loginOrEmail = 'Required';
         }
+        else if (values.loginOrEmail.length < 3 ) {
+            errors.loginOrEmail = 'Must be more then 3 symbols';
+        }
+        // else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.loginOrEmail)) {
+        //     errors.loginOrEmail = 'Invalid email address';
+        // }
+
+
         if (!values.password) {
             errors.password = 'Required';
-        } else if (values.password.length < 8) {
-            errors.password = 'Must be mo then 8 symbols';
+        } else if (values.password.length < 3 ) {
+            errors.password = 'Must be more then 3 symbols';
+        } else if ( values.password.length > 20) {
+            errors.password = 'Must be less then 20 symbols';
         }
-
         return errors;
     };
 
     const formik = useFormik({
         initialValues: {
-            email: '',
+            loginOrEmail: '',
             password: '',
-            rememberMe: false
+
         },
         validate,
         onSubmit: values => {
-            // dispatch(loginTC(values))
+            dispatch(loginTC(values))
+            // console.log(values)
+            console.log(errorFromServer)
         },
     });
     if (isLoggedIn) {
-        // return <Navigate to={PROFILE}/>
+        return <Navigate to={'/'}/>
     }
     return (
         <Box style={{display:"flex",  justifyContent:'space-around', marginTop:"75px"}}>
@@ -88,12 +95,12 @@ const Login = () => {
                             </FormLabel>
                             <FormGroup>
                                 <TextField
-                                    label="Email"
-                                    helperText={formik.touched.email && !!formik.errors.email ? formik.errors.email : " "}
+                                    label="Email or Username"
+                                    helperText={formik.touched.loginOrEmail && !!formik.errors.loginOrEmail ? formik.errors.loginOrEmail : " "}
                                     variant="standard"
                                     type="text"
-                                    error={formik.touched.email && !!formik.errors.email}
-                                    {...formik.getFieldProps('email')}
+                                    error={formik.touched.loginOrEmail && !!formik.errors.loginOrEmail}
+                                    {...formik.getFieldProps('loginOrEmail')}
                                 />
                                 <TextField
                                     label="Password"
@@ -114,24 +121,20 @@ const Login = () => {
                                         ),
                                     }}
                                     {...formik.getFieldProps('password')}
-
                                 />
-                                <FormControlLabel label={'Remember me'}
-                                                  control={<Checkbox
-                                                      checked={formik.values.rememberMe}
-                                                      {...formik.getFieldProps("rememberMe")}
-                                                  />}/>
-                                {/*<h6 style={{textAlign: 'right'}}><NavLink to={PASSWORD_RECOVERY} style={{*/}
-                                {/*    color: 'gray',*/}
-                                {/*    textDecoration: 'none'*/}
-                                {/*}}>Forgot password?</NavLink></h6>*/}
+                                {errorFromServer && <span style={{color:'red', fontSize:'12px'}}>The password or email or Username is incorrect. Please try again</span>}
+
+                                <h6 style={{textAlign: 'right'}}><NavLink to={'PASSWORD_RECOVERY'} style={{
+                                    color: 'gray',
+                                    textDecoration: 'none'
+                                }}>Forgot password?</NavLink></h6>
                                 <Button type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}} fullWidth>
                                     Sign In
                                 </Button>
                             </FormGroup>
                             <FormLabel style={{textAlign: "center"}}>
-                                <h6 style={{color: "gray"}}>Already have an account?</h6>
-                                {/*<h4><NavLink to={REGISTRATION} style={{color: 'blue'}}>Sign Up</NavLink></h4>*/}
+                                <h6 style={{color: "gray"}}>Don’t have an account?</h6>
+                                <h4><NavLink to={'REGISTRATION'} style={{color: 'blue'}}>Sign Up</NavLink></h4>
                             </FormLabel>
                         </FormControl>
                     </form>

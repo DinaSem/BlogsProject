@@ -19,7 +19,6 @@ export const BlogDetails = () => {
     const postsOfBlogs = useAppSelector(state => state.blogs.blogsPostsData)
     const blogs = useAppSelector(state => state.blogs.blogsData.items)
 
-    console.log('Blogs: ', blogs)
 
     const postsComponents = postsOfBlogs.items?.map((p) => <Post key={p.id}
                                                                  id={p.id}
@@ -42,7 +41,6 @@ export const BlogDetails = () => {
         dispatch(fetchPostsTC())
     }, [])
 
-    console.log('ID: ', id)
 
     return (
         <div className={s.blogsDetailsWrapper}>

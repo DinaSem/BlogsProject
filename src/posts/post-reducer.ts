@@ -1,8 +1,9 @@
 import {ErrorsMessagesType, postsApi, PostsGetResponseDataType, PostType} from "../api/posts-api";
 import {AddBlogACType, fetchBlogDetailsAndPostsTC} from "../blogs/blogs-reducer";
-import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC, setAppSuccessAC, StatusActionsType} from "../app/app-reducer";
 import {AppRootStateType, AppThunk} from "../api/store";
-import axios, {AxiosError} from "axios";
+import axios, {all, AxiosError} from "axios";
+import {handleServerNetworkError} from "../common/error-utils";
 
 
 const initialState = {
@@ -115,6 +116,7 @@ export const removePostTC = (postId: string): AppThunk => async dispatch => {
         dispatch(removePostAC(postId))
         dispatch(fetchPostsTC({}))
         dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppSuccessAC('Post has removed'))
     }
     catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
@@ -136,6 +138,7 @@ export const addPostTC = (blogId: string, title: string, shortDescription: strin
             dispatch(addPostAC(blogId, title, shortDescription, content))
             dispatch(fetchPostsTC({}))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAppSuccessAC('Post has added'))
         }
         catch (e) {
             const err = e as Error | AxiosError<ErrorsMessagesType>
@@ -143,9 +146,8 @@ export const addPostTC = (blogId: string, title: string, shortDescription: strin
                 const error = err.response?.data
                     ? err.response.data.errorsMessages[0].message
                     : err.message;
-                dispatch(setAppErrorAC(error))
+                handleServerNetworkError({message: error}, dispatch)
             }
-            dispatch(setAppStatusAC('failed'))
         }
     }
 export const changePostTC = (id: string, title: string, shortDescription: string, content: string): AppThunk =>
@@ -157,6 +159,7 @@ export const changePostTC = (id: string, title: string, shortDescription: string
             dispatch(updatePostAC(id, blogId, title, shortDescription, content))
             dispatch(fetchBlogDetailsAndPostsTC(blogId))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAppSuccessAC('Post has updated'))
         }
             // .catch((e: AxiosError<{errorsMessages: Array<{field: string, message:string}>}>)=>{
 

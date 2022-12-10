@@ -38,7 +38,7 @@ export const EditPostModal = ({blogName,
 
     const [open, setOpen] = useState<boolean>(false)
     const handleOpen = () => setOpen(true)
-    console.log(blogs)
+
     const currentBlog = blogs.find(b=>b.name===blogName)
     const handleClose = () => {
         setOpen(false)

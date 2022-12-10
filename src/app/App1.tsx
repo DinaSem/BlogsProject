@@ -1,6 +1,6 @@
 import * as React from 'react';
 import s from './App1.module.css'
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import BlogsPage from "../blogs/BlogsPage";
 import {PostsPage} from "../posts/PostsPage";
 import Header from "../header/Header";
@@ -29,7 +29,9 @@ export default function App1() {
     const status = useAppSelector(state => state.app.status)
     // const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const isLoggedIn = true;
-
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
     return (
 
         <Container className={s.appWrapper} style={{

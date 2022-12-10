@@ -1,3 +1,10 @@
+import {authAPI, LoginDataType} from "../api/auth-api";
+import {AppThunk} from "../api/store";
+import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
+import {handleServerNetworkError} from "../common/error-utils";
+import axios, {AxiosError} from "axios";
+import {ErrorsMessagesType} from "../api/posts-api";
+
 let initialState = {
     isLoggedIn: false,
     isInitialized: false,
@@ -63,40 +70,47 @@ export const setNewPasswordAC = (value: boolean) => {
 }
 
 //thunks
-// export const loginTC = (data: LoginDataType) => {
-//     return (dispatch: AppDispatch) => {
-//         dispatch(setAppStatusAC("loading"))
-//         authAPI.login(data)
-//             .then(res => {
-//                 dispatch(setProfileAC(res.data))
-//                 dispatch(loginAC(true))
-//             })
-//             .catch(err => {
-//                 const error = err.response
-//                     ? err.response.data.error
-//                     : err.message
-//                 handleServerNetworkError({message: error}, dispatch)
-//             })
-//             .finally(() => dispatch(setAppStatusAC("idle")))
-//     }
-// }
-//
-// export const logoutTC = () => {
-//     return (dispatch: AppDispatch) => {
-//         dispatch(setAppStatusAC("loading"))
-//         authAPI.logout()
-//             .then(() => {
-//                 dispatch(loginAC(false))
-//             })
-//             .catch(err => {
-//                 const error = err.response
-//                     ? err.response.data.error
-//                     : err.message
-//                 handleServerNetworkError({message: error}, dispatch)
-//             })
-//             .finally(() => dispatch(setAppStatusAC("idle")))
-//     }
-// }
+export const loginTC = (data: LoginDataType): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.login(data)
+        dispatch(loginAC(true))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data
+                : err.message;
+            console.log(error)
+            handleServerNetworkError({message: error}, dispatch)
+            // handleServerNetworkError({message: 'неверный логин или пароль'}, dispatch)
+
+        }
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
+}
+
+export const logoutTC = (): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.logout()
+        dispatch(loginAC(false))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data
+                : err.message;
+            console.log(error)
+            handleServerNetworkError({message: error}, dispatch)
+        }
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
+}
 //
 // export const initializeAppTC = () => (dispatch: AppDispatch) => {
 //     dispatch(setAppStatusAC("loading"))
