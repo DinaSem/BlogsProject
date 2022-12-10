@@ -125,7 +125,7 @@ const Login = () => {
                                 {/*    color: 'gray',*/}
                                 {/*    textDecoration: 'none'*/}
                                 {/*}}>Forgot password?</NavLink></h6>*/}
-                                <Button type={'submit'} variant={'contained'} color={'primary'} fullWidth>
+                                <Button type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}} fullWidth>
                                     Sign In
                                 </Button>
                             </FormGroup>

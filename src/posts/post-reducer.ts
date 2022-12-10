@@ -1,8 +1,8 @@
-import {postsApi, PostsGetResponseDataType, PostType} from "../api/posts-api";
+import {ErrorsMessagesType, postsApi, PostsGetResponseDataType, PostType} from "../api/posts-api";
 import {AddBlogACType, fetchBlogDetailsAndPostsTC} from "../blogs/blogs-reducer";
 import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
 import {AppRootStateType, AppThunk} from "../api/store";
-import {AxiosError} from "axios";
+import axios, {AxiosError} from "axios";
 
 
 const initialState = {
@@ -77,8 +77,16 @@ export const fetchPostsTC = (params: { pageNumber?: string; pageSize?: string } 
         const res = await postsApi.getPosts(params)
         dispatch(setPostsAC(res.data))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 export const fetchPostDetailsTC = (id: string): AppThunk => async dispatch => {
@@ -87,8 +95,16 @@ export const fetchPostDetailsTC = (id: string): AppThunk => async dispatch => {
         const res = await postsApi.getPostDetails(id)
         dispatch(setPostDetailsAC(res.data, id))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 
@@ -99,7 +115,16 @@ export const removePostTC = (postId: string): AppThunk => async dispatch => {
         dispatch(removePostAC(postId))
         dispatch(fetchPostsTC({}))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 
@@ -111,9 +136,15 @@ export const addPostTC = (blogId: string, title: string, shortDescription: strin
             dispatch(addPostAC(blogId, title, shortDescription, content))
             dispatch(fetchPostsTC({}))
             dispatch(setAppStatusAC('succeeded'))
-            // @ts-ignore
-        } catch (e: AxiosError<{ errorsMessages: Array<{ field: string, message: string }> }>) {
-            dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
+        }
+        catch (e) {
+            const err = e as Error | AxiosError<ErrorsMessagesType>
+            if (axios.isAxiosError(err)) {
+                const error = err.response?.data
+                    ? err.response.data.errorsMessages[0].message
+                    : err.message;
+                dispatch(setAppErrorAC(error))
+            }
             dispatch(setAppStatusAC('failed'))
         }
     }
@@ -128,9 +159,15 @@ export const changePostTC = (id: string, title: string, shortDescription: string
             dispatch(setAppStatusAC('succeeded'))
         }
             // .catch((e: AxiosError<{errorsMessages: Array<{field: string, message:string}>}>)=>{
-            // @ts-ignore
-        catch (e: AxiosError<{ errorsMessages: Array<{ field: string, message: string }> }>) {
-            dispatch(setAppErrorAC(e.response?.data.errorsMessages[0].message))
+
+        catch (e) {
+            const err = e as Error | AxiosError<ErrorsMessagesType>
+            if (axios.isAxiosError(err)) {
+                const error = err.response?.data
+                    ? err.response.data.errorsMessages[0].message
+                    : err.message;
+                dispatch(setAppErrorAC(error))
+            }
             dispatch(setAppStatusAC('failed'))
         }
     }

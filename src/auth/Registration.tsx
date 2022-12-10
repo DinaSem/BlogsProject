@@ -13,6 +13,8 @@ import {Navigate, NavLink, useNavigate} from "react-router-dom";
 
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../hooks";
+import authpicture from '../pictures/auth.png'
+import Box from "@mui/material/Box";
 
 
 
@@ -96,9 +98,10 @@ const Registration = () => {
     }, [signUp])
 
 
-    return (<Grid container justifyContent={'center'} >
-            <Grid marginTop={'50px'} textAlign={"center"} width={'400px'} >
-                <Paper elevation={14} style={{padding:'30px'}}>
+    return (
+        <Box style={{display:"flex",  justifyContent:'space-around', marginTop:"75px"}} >
+            <Grid  textAlign={"center"} width={"378px"}>
+                <Paper elevation={14} style={{padding: "30px", height:"392px"}}>
                     <form onSubmit={formik.handleSubmit} >
                         <FormControl text-align={'center'} fullWidth>
                             <FormLabel>
@@ -150,23 +153,27 @@ const Registration = () => {
 
                                 />
 
-                                {JSON.stringify(formik.errors).length === 2 ?
-                                    <Button type={'submit'} variant={'contained'} color={'primary'}>
+                                {JSON.stringify(formik.errors).length === 2
+                                    ? <Button type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}}>
                                         Sign Up
-                                    </Button> : <Button disabled type={'submit'} variant={'contained'} color={'primary'}>
+                                    </Button>
+                                    : <Button disabled type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}}>
                                         Sign Up
                                     </Button>}
 
                             </FormGroup>
                             <FormLabel>
-                                <h6 style={{color: "gray"}}>Already have an account?</h6>
-                                {/*<h4><NavLink to={LOGIN} style={{color: 'blue'}}>Sign In</NavLink></h4>*/}
+                                <h6 style={{color: "gray"}}>Already a member?</h6>
+                                <h4><NavLink to={'login'} style={{color: 'blue'}}>Sign In</NavLink></h4>
                             </FormLabel>
                         </FormControl>
                     </form>
                 </Paper>
             </Grid>
-        </Grid>
+            <Box>
+                <img src={authpicture} alt="" style={{width:'632px', height:'433.64px'}}/>
+            </Box>
+        </Box>
     )
 }
 

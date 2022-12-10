@@ -17,13 +17,14 @@ export const appReducer = (state: InitialStateType = initialState, action: Statu
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
-    // происходит ли сейчас взаимодействие с сервером
     status: RequestStatusType
-    // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
     error: string | null
 }
 
-export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
+export const setAppErrorAC = (error: string | null) => {
+    console.log({error})
+    return ({type: 'APP/SET-ERROR', error} as const);
+}
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>

@@ -15,6 +15,7 @@ import {CircularProgress} from "@mui/material";
 import {useAppSelector} from "../hooks";
 import {ErrorSnackbar} from "../common/ErrorSnackbar";
 import Login from "../auth/Login";
+import Registration from "../auth/Registration";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -82,6 +83,7 @@ export default function App1() {
                             <Route path='/editblog/:id/' element={<EditBlog/>}/>
                             <Route path='/post/:id' element={<PostDetails/>}/>
                             <Route path='/login' element={<Login/>}/>
+                            <Route path='/registration' element={<Registration/>}/>
                         </Routes>
                     </Box>
                 </Box>

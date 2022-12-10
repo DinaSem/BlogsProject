@@ -14,45 +14,21 @@ export const postsApi = {
         return instance.get<PostsGetRequestDataType, AxiosResponse<PostsGetResponseDataType>>('posts', {params});
     },
     getPostDetails(postId: string) {
-        return instance.get(`posts/${postId}`);
+        return instance.get<PostType>(`posts/${postId}`);
     },
     deletePost(postId: string) {
         return instance.delete(`posts/${postId}`);
     },
     createPost(blogId:string, title: string, shortDescription: string, content: string,) {
-        return instance.post(`posts`, {blogId,title,shortDescription,content});
+        return instance.post<{title: string, shortDescription: string, content: string},AxiosResponse<ResponseType<{ item: PostType }>>>(`posts`, {blogId,title,shortDescription,content});
     },
     updatePost(postId:string, blogId:string,title: string, shortDescription: string, content: string,) {
         return instance.put<{postId:string, blogId:string,title: string, shortDescription: string, content: string},AxiosResponse<ResponseType<{ item: PostType }>>>(`posts/${postId}`, {blogId,title,shortDescription,content});
     }
-
-    // createPost(blogId:string, title: string, shortDescription: string, content: string,) {
-    //     return instance.post(`blogs/${blogId}/posts`, {title,shortDescription,content});
-    // },
-
-    // updateTodolist(id: string, title: string) {
-    //     return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title});
-    // },
-    // getTasks(todolistId: string) {
-    //     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
-    // },
-    // deleteTask(todolistId: string, taskId: string) {
-    //     return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
-    // },
-    // createTask(todolistId: string, title: string) {
-    //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks`, {title});
-    // },
-    // updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-    //     return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    // }
 }
 
 // types
 
-
-// export type BlogsRequestType = {
-//     params: BlogsGetRequestDataType
-// }
 
 export type PostsGetRequestDataType = {
     pageNumber?: string,
@@ -78,47 +54,27 @@ export type PostType = {
     extendedLikesInfo?: {
         likesCount: number,
         dislikesCount: number,
-        myStatus: string,
-        newestLikes: []
+        myStatus: "None || Like || Dislike",
+        newestLikes: [
+            {
+                addedAt: string,
+                userId: string,
+                login: string
+            }
+        ]
     }
 }
-// export type PostsGetResponseDataType = {
-//     pagesCount: number,
-//     page: number,
-//     pageSize: number,
-//     totalCount: number,
-//     "items": [
-//         {
-//             id: string,
-//             title: string,
-//             shortDescription: string,
-//             content: string,
-//             bloggerId: string,
-//             bloggerName: string,
-//             addedAt: string,
-//             extendedLikesInfo: {
-//                 likesCount: number,
-//                 dislikesCount: number,
-//                 myStatus: string,
-//                 newestLikes: [
-//                     {
-//                         addedAt: string,
-//                         userId: string,
-//                         login: string
-//                     }
-//                 ]
-//             }
-//         }
-//     ]
-// }
-
-export type ResponseType<D = {}> = {
+export type ErrorsMessagesType={
     "errorsMessages": [
         {
             "message": "string",
             "field": "string"
         }
     ],
+}
+
+export type ResponseType<D = {}> = {
+   errors:ErrorsMessagesType,
     data: D
 }
 //}

@@ -1,6 +1,8 @@
 import {blogsApi, BlogsGetResponseDataType, BlogsPostsGetResponseDataType, BlogType,} from "../api/blogs-api";
-import {setAppStatusAC, StatusActionsType} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
 import {AppThunk} from "../api/store";
+import axios, {AxiosError} from "axios";
+import {ErrorsMessagesType} from "../api/posts-api";
 
 const initialState = {
     blogsData: {} as BlogsGetResponseDataType,
@@ -97,8 +99,17 @@ export const fetchBlogsTC = (params: { searchNameTerm?: string, pageNumber?: num
         const res = await blogsApi.getBlogs(params)
                 dispatch(setBlogsAC(res.data))
                 dispatch(setAppStatusAC('succeeded'))
-            }catch (e) {
-    }
+            }
+       catch (e) {
+           const err = e as Error | AxiosError<ErrorsMessagesType>
+           if (axios.isAxiosError(err)) {
+               const error = err.response?.data
+                   ? err.response.data.errorsMessages[0].message
+                   : err.message;
+               dispatch(setAppErrorAC(error))
+           }
+           dispatch(setAppStatusAC('failed'))
+       }
 }
 export const fetchBlogDetailsTC = (id: string):AppThunk => async dispatch => {
         dispatch(setAppStatusAC('loading'))
@@ -106,7 +117,16 @@ export const fetchBlogDetailsTC = (id: string):AppThunk => async dispatch => {
         const res = await blogsApi.getBlogDetail(id)
         dispatch(setBlogDetailsAC(res.data, id))
         dispatch(setAppStatusAC('succeeded'))
-    }catch (e) {
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 export const fetchBlogDetailsAndPostsTC = (id: string):AppThunk => async dispatch => {
@@ -115,7 +135,16 @@ export const fetchBlogDetailsAndPostsTC = (id: string):AppThunk => async dispatc
         const res = await blogsApi.getBlogsPosts(id)
         dispatch(setBlogsPostsAC(res.data, id))
         dispatch(setAppStatusAC('succeeded'))
-    }catch (e) {
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 export const addBlogTC = (name: string, description: string, websiteUrl: string):AppThunk => async dispatch => {
@@ -124,10 +153,17 @@ export const addBlogTC = (name: string, description: string, websiteUrl: string)
         const res = await blogsApi.createBlog(name, description, websiteUrl)
                 dispatch(addBlogAC(res.data.item))
                 dispatch(setAppStatusAC('succeeded'))
-    }catch (e) {
-
     }
-
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
+    }
 }
 
 export const removeBlogTC = (id: string):AppThunk => async dispatch => {
@@ -136,8 +172,16 @@ export const removeBlogTC = (id: string):AppThunk => async dispatch => {
             await blogsApi.deleteBlog(id)
                 dispatch(removeBlogAC(id))
                 dispatch(setAppStatusAC('succeeded'))
-    }catch (e) {
-        
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 
@@ -148,7 +192,16 @@ export const changeBlogTC = (blogId: string, name?: string, websiteUrl?: string,
             await blogsApi.updateBlog(blogId, name, websiteUrl, description)
                     dispatch(changeBlogAC(blogId, name, websiteUrl, description))
                     dispatch(setAppStatusAC('succeeded'))
-    }   catch (e) {
+    }
+    catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data.errorsMessages[0].message
+                : err.message;
+            dispatch(setAppErrorAC(error))
+        }
+        dispatch(setAppStatusAC('failed'))
     }
 }
 
