@@ -10,6 +10,7 @@ import {addPostTC, fetchPostsTC} from "./post-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {AddPostModal} from "../modal windows/posts modal/add post modal/AddPostModal";
 import {fetchBlogsTC} from "../blogs/blogs-reducer";
+import {Navigate} from "react-router-dom";
 
 
 export const PostsPage = () => {
@@ -20,7 +21,7 @@ export const PostsPage = () => {
     //если их нету надо сделать запрос
 
     //если они есть то запрос игнорим
-
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const posts = useAppSelector(state => state.posts.postsData)
     const blogs = useAppSelector(state => state.blogs.blogsData.items)
 
@@ -51,6 +52,9 @@ export const PostsPage = () => {
     }, [dispatch])
     // console.log(posts)
 
+    if (!isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
     return (
         <Container style={{maxWidth: '100%', minHeight: '100vh',}} className={s.wrapper}>
 

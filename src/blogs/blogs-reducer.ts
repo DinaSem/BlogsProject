@@ -171,7 +171,7 @@ export const addBlogTC = (name: string, description: string, websiteUrl: string)
 export const removeBlogTC = (id: string):AppThunk => async dispatch => {
         dispatch(setAppStatusAC('loading'))
     try{
-            await blogsApi.deleteBlog(id)
+        const res = await blogsApi.deleteBlog(id)
                 dispatch(removeBlogAC(id))
                 dispatch(setAppStatusAC('succeeded'))
         dispatch(setAppSuccessAC('Blog has deleted'))
@@ -192,7 +192,7 @@ export const changeBlogTC = (blogId: string, name?: string, websiteUrl?: string,
     async dispatch => {
         dispatch(setAppStatusAC('loading'))
     try{
-            await blogsApi.updateBlog(blogId, name, websiteUrl, description)
+        const res = await blogsApi.updateBlog(blogId, name, websiteUrl, description)
                     dispatch(changeBlogAC(blogId, name, websiteUrl, description))
                     dispatch(setAppStatusAC('succeeded'))
         dispatch(setAppSuccessAC('Blog has updated'))

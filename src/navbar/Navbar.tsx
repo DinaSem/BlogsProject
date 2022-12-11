@@ -27,7 +27,7 @@ export default function Navbar() {
             {/*<Toolbar/>*/}
 
             <List>
-                <Link to={'/'} style={{textDecoration:"none"}}>
+                <Link to={'/blogs'} style={{textDecoration:"none"}}>
                     <ListItem disablePadding>
                         <ListItemButton >
                             <ListItemIcon style={{justifyContent: 'center'}}>

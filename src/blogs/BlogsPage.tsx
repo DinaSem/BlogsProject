@@ -10,10 +10,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {addBlogTC, fetchBlogsTC} from "./blogs-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {BasicModal} from "../modal windows/basic modal/BasicModal";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 
 export default function BlogsPage() {
-    //у нас рисуются блоги от запроса на сервер
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const pageNumber = useAppSelector(state => state.blogs.pageNumber)
     const pageSize = useAppSelector(state => state.blogs.pageSize)
     const searchNameTerm = useAppSelector(state => state.blogs.searchNameTerm)
@@ -34,7 +34,7 @@ export default function BlogsPage() {
         setCurrentPage(currentPage+1)
     }
     const onClickAddBlogHandler = () => {
-            navigate(`addblog`)
+            navigate(`/addblog`)
 
     }
 
@@ -50,6 +50,10 @@ export default function BlogsPage() {
     }, [dispatch, searchNameTerm, pageSize,pageNumber,currentPage,sortDirection])
 
 
+    if (!isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
+    // console.log(isLoggedIn)
     return (
         <Container style={{maxWidth: '940px', minHeight: '100vh',}} className={s.wrapper}>
             <h1>Blogs</h1>

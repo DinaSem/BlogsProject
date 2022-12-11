@@ -74,6 +74,8 @@ export const loginTC = (data: LoginDataType): AppThunk => async dispatch => {
     dispatch(setAppStatusAC("loading"))
     try {
         const res = await authAPI.login(data)
+        const accessToken = res.data.accessToken;
+        document.cookie = `accessToken=${accessToken}`;
         dispatch(loginAC(true))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -99,6 +101,7 @@ export const logoutTC = (): AppThunk => async dispatch => {
         dispatch(loginAC(false))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
+        dispatch(loginAC(false))
         const err = e as Error | AxiosError<ErrorsMessagesType>
         if (axios.isAxiosError(err)) {
             const error = err.response?.data
@@ -112,28 +115,25 @@ export const logoutTC = (): AppThunk => async dispatch => {
     }
 }
 //
-// export const initializeAppTC = () => (dispatch: AppDispatch) => {
-//     dispatch(setAppStatusAC("loading"))
-//     authAPI.me()
-//         .then(res => {
-//             dispatch(loginAC(true))
-//             dispatch(setProfileAC(res.data));
-//         })
-//         .catch( () => {
-//                 // const error = err.response
-//                 //     ? err.response.data.error
-//                 //     : err.message
-//                 // handleServerNetworkError({message: error}, dispatch)
-//             }
-//
-//         )
-//         .finally(() => {
-//                 dispatch(setIsInitializedAC(true))
-//                 dispatch(setAppStatusAC("idle"))
-//             }
-//         )
-//
-// }
+export const initializeAppTC = (): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.me()
+        dispatch(loginAC(true))
+        // dispatch(setProfileAC(res.data));
+    } catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data
+                : err.message;
+            console.log(error)
+            handleServerNetworkError({message: error}, dispatch)
+        }
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
+}
 //
 // export const registrationTC = (values: ValuesType) =>(dispatch: AppDispatch) => {
 //     dispatch(setAppStatusAC("loading"))

@@ -6,12 +6,16 @@ import {useAppDispatch, useAppSelector} from "../hooks";
 import logoutImg from '../pictures/logout.png'
 import Box from "@mui/material/Box";
 import {logoutTC} from "../auth/auth-reducer";
+import {useNavigate} from "react-router-dom";
 
 export default function Header() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+
     const LogOutHandler = () => {
         dispatch(logoutTC())
+        navigate('/')
     }
     return (
         <AppBar position='absolute'

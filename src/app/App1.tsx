@@ -27,11 +27,11 @@ const style = {
 export default function App1() {
     //нету запросов
     const status = useAppSelector(state => state.app.status)
-    // const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const isLoggedIn = true;
-    if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
-    }
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+     // const isLoggedIn = true;
+    // if (isLoggedIn) {
+    //     return <Navigate to={'/blogs'}/>
+    // }
     return (
 
         <Container className={s.appWrapper} style={{
@@ -41,7 +41,7 @@ export default function App1() {
             <Box style={{
                 display: "flex",
                 justifyContent: "center",
-                boxSizing: "border-box",
+                // boxSizing: "border-box",
                 width: '100%',
                 padding: '63px 0 0 0 ',
                 backgroundColor: '#f6f2f2',
@@ -78,13 +78,13 @@ export default function App1() {
                         {status==='loading' && <CircularProgress color="secondary" sx={style}/>}
                         <ErrorSnackbar/>
                         <Routes>
-                            <Route path='/' element={<BlogsPage/>}/>
+                            <Route path='/blogs' element={<BlogsPage/>}/>
                             <Route path='/posts/' element={<PostsPage/>}/>
                             <Route path='blog/:id' element={<BlogDetails/>}/>
                             <Route path='/addblog/' element={<AddBlog/>}/>
                             <Route path='/editblog/:id/' element={<EditBlog/>}/>
                             <Route path='/post/:id' element={<PostDetails/>}/>
-                            <Route path='/login' element={<Login/>}/>
+                            <Route path='/' element={<Login/>}/>
                             <Route path='/registration' element={<Registration/>}/>
                         </Routes>
                     </Box>

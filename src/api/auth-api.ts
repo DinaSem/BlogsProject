@@ -1,7 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 
 
-
 const instance = axios.create({
     baseURL: 'https://nest12.onrender.com/',
     // headers: {
@@ -16,16 +15,16 @@ export const authAPI = {
     //     return instance.post('auth/registeration', data)
     // },
     login(data: LoginDataType) {
-        return instance.post<LoginDataType,AxiosResponse<LoginResponseType>>('auth/login', data)
+        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
     },
     logout() {
         // return instance.post<{},AxiosResponse<{info:string}>>('/auth/me')
         return instance.post('/auth/logout')
     },
-    // me() {
-    //     // return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
-    //     return instance.get('/auth/me')
-    // },
+    me() {
+        // return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
+        return instance.get('/auth/me')
+    },
     // passwordRecovery(data:RecoveryPasswordDataType){
     //     return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('auth/forgot', data)
     // },
@@ -54,11 +53,11 @@ export type LoginResponseType = {
 // }
 
 export type RegisterResponseType = {
-    addedUser:any,
+    addedUser: any,
     error?: string
 }
 
-export type RecoveryPasswordDataType={
+export type RecoveryPasswordDataType = {
     email: string
     from: string
     message: string
@@ -69,10 +68,10 @@ export type SetNewPasswordType = {
     resetPasswordToken: string
 }
 
-export type PasswordResponseType ={
-    info:string
+export type PasswordResponseType = {
+    info: string
     error: string
-    success:boolean
+    success: boolean
 }
 
 export type ProfileType = {

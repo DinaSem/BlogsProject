@@ -38,7 +38,7 @@ export const AddBlog = () =>{
         },
         onSubmit: values => {
             dispatch(addBlogTC(values.blogName, values.description, values.website));
-            navigate(`/`)
+            navigate(`/blogs`)
         },
     });
 

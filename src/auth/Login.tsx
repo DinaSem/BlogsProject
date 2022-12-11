@@ -82,7 +82,7 @@ const Login = () => {
         },
     });
     if (isLoggedIn) {
-        return <Navigate to={'/'}/>
+        return <Navigate to={'blogs'}/>
     }
     return (
         <Box style={{display:"flex",  justifyContent:'space-around', marginTop:"75px"}}>
