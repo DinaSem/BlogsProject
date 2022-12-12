@@ -3,7 +3,7 @@ import s from './postsPage.module.css'
 import {Post} from "./post/Post";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Search from "../searchPanel/Search";
+import {Search} from "../searchPanel/Search";
 import {SelectComp} from "../searchPanel/SelectComp";
 import Container from "@mui/material/Container";
 import {addPostTC, fetchPostsTC} from "./post-reducer";
@@ -28,7 +28,7 @@ export const PostsPage = () => {
 
     useEffect(() => {
         if (blogs && blogs.length > 0) return
-        dispatch(fetchBlogsTC({}))
+        dispatch(fetchBlogsTC())
             }, [])
     const [showActions, setShowActions] = useState(false)
 

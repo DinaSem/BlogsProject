@@ -6,12 +6,14 @@ import axios, {AxiosError} from "axios";
 import {ErrorsMessagesType} from "../api/posts-api";
 
 let initialState = {
+
     isLoggedIn: false,
     isInitialized: false,
     signUp: false,
     recoveryStatus: false,
     email: "",
-    newPasswordStatus: false
+    newPasswordStatus: false,
+
 }
 export type StateType = typeof initialState;
 
@@ -39,10 +41,10 @@ export const authReducer = (state: StateType = initialState, action: AuthActions
 }
 
 //actions
-export const loginAC = (value: boolean) => {
+export const loginAC = (value: boolean,) => {
     return {
         type: 'auth/SET-IS-LOGGED-IN',
-        value
+        value,
     } as const
 }
 
@@ -70,12 +72,14 @@ export const setNewPasswordAC = (value: boolean) => {
 }
 
 //thunks
-export const loginTC = (data: LoginDataType): AppThunk => async dispatch => {
+export const loginTC = (data: LoginDataType,): AppThunk => async dispatch => {
     dispatch(setAppStatusAC("loading"))
     try {
         const res = await authAPI.login(data)
+
         const accessToken = res.data.accessToken;
-        document.cookie = `accessToken=${accessToken}`;
+        console.log(res.headers)
+        localStorage.setItem('jwt_token', accessToken)
         dispatch(loginAC(true))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -97,12 +101,17 @@ export const loginTC = (data: LoginDataType): AppThunk => async dispatch => {
 export const logoutTC = (): AppThunk => async dispatch => {
     dispatch(setAppStatusAC("loading"))
     try {
-        const res = await authAPI.logout()
+
+        await authAPI.logout()
+        localStorage.removeItem('jwt_token')
         dispatch(loginAC(false))
         dispatch(setAppStatusAC('succeeded'))
+
     } catch (e) {
-        dispatch(loginAC(false))
+        //dispatch(loginAC(false))
         const err = e as Error | AxiosError<ErrorsMessagesType>
+        //await authAPI.refreshToken()
+
         if (axios.isAxiosError(err)) {
             const error = err.response?.data
                 ? err.response.data

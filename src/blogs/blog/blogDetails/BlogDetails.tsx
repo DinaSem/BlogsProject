@@ -37,9 +37,9 @@ export const BlogDetails = () => {
     }, [dispatch, id,])
 
     useEffect(() => {
-        dispatch(fetchBlogsTC({}))
+        dispatch(fetchBlogsTC())
         dispatch(fetchPostsTC())
-    }, [])
+    }, [dispatch])
 
 
     return (

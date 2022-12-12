@@ -4,20 +4,23 @@ import {AppThunk} from "../api/store";
 import axios, {AxiosError} from "axios";
 import {ErrorsMessagesType} from "../api/posts-api";
 
+//TODO change total count
 const initialState = {
     blogsData: {} as BlogsGetResponseDataType,
-    pageNumber: 1,
-    pageSize: 10,
-    pagesCount: 0,
-    searchNameTerm: '',
-    sortBy: 'desc',
-    sortDirection: 'desc',
+    totalCount: 0,
     blog: {} as BlogType,
     blogsPostsData: {} as BlogsPostsGetResponseDataType,
-    currentBlogId: ''
+    currentBlogId: '',
+    params: {
+        pageNumber: 1,
+        pageSize: 10,
+        searchNameTerm: '',
+        sortBy: '',
+        sortDirection: 'desc',
+    }
 }
 
-// export const blogsReducer = (state: Array<BlogsType> = initialState, action: ActionsType): Array<BlogsType> => {
+
 export const blogsReducer = (state: InitialStateType = initialState, action: BlogsActionsType): InitialStateType => {
     switch (action.type) {
         case "BLOGS/SET-BLOGS":
@@ -27,7 +30,7 @@ export const blogsReducer = (state: InitialStateType = initialState, action: Blo
         case "BLOGS/SET-BLOGS-POSTS":
             return {...state, blogsPostsData: action.blogsPostsData}
         case "BLOGS/SET-SEARCH-NAME-TERM":
-            return {...state, searchNameTerm: action.title}
+            return {...state, params: {...state.params, searchNameTerm: action.title}}
         case 'BLOGS/ADD-BLOG':
             return {...action.blog, ...state}
         case 'BLOGS/REMOVE-BLOG':
@@ -50,9 +53,9 @@ export const blogsReducer = (state: InitialStateType = initialState, action: Blo
                 }
             }
         case "BLOGS/CHANGE-SORT-DIRECTION-BLOG":
-            return {...state, sortDirection: action.sortDirection}
-        case "BLOGS/SORT-BY-BLOG":
-            return {...state, sortBy: action.sortBy}
+            return {...state, params: {...state.params,sortDirection: action.sortDirection,sortBy:action.sortBy}}
+        // case "BLOGS/SORT-BY-BLOG":
+        //     return {...state, sortBy: action.sortBy}
         case "BLOGS/SET-BLOG-ID":
             return {...state, currentBlogId: action.blogId}
         default:
@@ -78,22 +81,23 @@ export const changeBlogAC = (blogId: string, name?: string, websiteUrl?: string,
     name,
     websiteUrl, description
 } as const)
-export const sortDirectionBlogsAC = (sortDirection: string) => ({
+export const sortDirectionBlogsAC = (sortDirection: string,sortBy:string) => ({
     type: 'BLOGS/CHANGE-SORT-DIRECTION-BLOG',
-    sortDirection
+    sortDirection,sortBy
 } as const)
-export const sortByBlogsAC = (sortBy: string) => ({
-    type: 'BLOGS/SORT-BY-BLOG',
-    sortBy
-} as const)
+// export const sortByBlogsAC = (sortBy: string) => ({
+//     type: 'BLOGS/SORT-BY-BLOG',
+//     sortBy
+// } as const)
 export const setCurrentBlogIdAC = (blogId: string) => ({
     type: 'BLOGS/SET-BLOG-ID',
     blogId
 } as const)
 
 // thunks
-export const fetchBlogsTC = (params: { searchNameTerm?: string, pageNumber?: number, pageSize?: number, sortBy?: string, sortDirection?: string }):AppThunk =>
-    async dispatch => {
+export const fetchBlogsTC = ():AppThunk =>
+    async (dispatch, getState) => {
+        const params = getState().blogs.params
         dispatch(setAppStatusAC('loading'))
        try{
         const res = await blogsApi.getBlogs(params)
@@ -220,7 +224,7 @@ export type AddBlogACType = ReturnType<typeof addBlogAC>;
 export type RemoveBlogACType = ReturnType<typeof removeBlogAC>;
 export type ChangeBlogACType = ReturnType<typeof changeBlogAC>;
 export type SortDirectionType = ReturnType<typeof sortDirectionBlogsAC>;
-export type SortByBlogsType = ReturnType<typeof sortByBlogsAC>;
+// export type SortByBlogsType = ReturnType<typeof sortByBlogsAC>;
 export type SetCurrentBlogIdACType = ReturnType<typeof setCurrentBlogIdAC>;
 
 export type BlogsActionsType =
@@ -232,7 +236,7 @@ export type BlogsActionsType =
     | RemoveBlogACType
     | ChangeBlogACType
     | SortDirectionType
-    | SortByBlogsType
+    // | SortByBlogsType
     | SetCurrentBlogIdACType
     | StatusActionsType
 

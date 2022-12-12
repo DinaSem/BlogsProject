@@ -1,43 +1,43 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Blogs from "../blogs/BlogsPage";
-import bloggers from '../pictures/Blogers.png'
+import blogIsActive from '../pictures/BlogersRed.svg'
+import blogIsNotActive from '../pictures/Blogers.svg'
 import posts from '../pictures/Posts.png'
-import {PostsPage} from "../posts/PostsPage";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import s from './navbar.module.css'
 
-const drawerWidth = 252;
 
 export default function Navbar() {
+    const location = useLocation()
+
+  const blogPageIsActive = location.pathname.includes('blog')
+    const postPageIsActive = location.pathname.includes('post')
+
     return (
+            <List
+                style={{paddingLeft: '47px',paddingTop: '30px'}}
 
-        <div className={s.headerWrapper}>
-            {/*    <Drawer variant="permanent" sx={{*/}
-            {/*    width: drawerWidth, flexShrink: 0,*/}
-            {/*    [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},*/}
-            {/*}}>*/}
-            {/*<Toolbar/>*/}
-
-            <List>
-                <Link to={'/blogs'} style={{textDecoration:"none"}}>
+            >
+                <Link to={'/blogs'} style={{textDecoration:"none", marginTop:'15px'}}>
                     <ListItem disablePadding>
-                        <ListItemButton >
+                        <ListItemButton style={{borderRight:  blogPageIsActive ? '2px solid red':'', padding:'0'}}>
                             <ListItemIcon style={{justifyContent: 'center'}}>
-                                <img src={bloggers}/>
+                                {blogPageIsActive
+                                    ? <img src={blogIsActive} style={{padding:'0'}}/>
+                                    : <img src={blogIsNotActive} style={{padding:'0'}}/>
+                                }
+
                             </ListItemIcon>
                             <ListItemText primary={"Blogs"} style={{
                                 fontWeight: '400',
                                 fontSize: '14px',
                                 lineHeight: '24px',
-                                color:"black",
+                                color: blogPageIsActive?'red':"black",
                                 textDecoration:"none",
                             }}/>
                         </ListItemButton>
@@ -46,23 +46,26 @@ export default function Navbar() {
 
                 <Link to={'posts'}style={{textDecoration:"none"}}>
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton style={{borderRight:  postPageIsActive ? '2px solid red':'', padding:'0'}}>
                             <ListItemIcon style={{justifyContent: 'center'}}>
-                                <img src={posts}/>
+                                {postPageIsActive
+                                    ? <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 0V8H8V0H0ZM6 6H2V2H6V6ZM0 10V18H8V10H0ZM6 16H2V12H6V16ZM10 0V8H18V0H10ZM16 6H12V2H16V6ZM10 10V18H18V10H10ZM16 16H12V12H16V16Z" fill="red"/>
+                                    </svg>
+                                    :<img src={posts} style={{padding:'0'}}/>
+
+                                }
                             </ListItemIcon>
                             <ListItemText primary={'Posts'} style={{
                                 fontWeight: '400',
                                 fontSize: '14px',
                                 lineHeight: '24px',
                                 textDecoration:"none",
-                                color:"black"
+                                color: postPageIsActive?'red':"black",
                             }}/>
                         </ListItemButton>
                     </ListItem>
                 </Link>
             </List>
-
-            {/*</Drawer>*/}
-        </div>
     );
 }

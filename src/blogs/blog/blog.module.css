@@ -7,17 +7,14 @@
     border: 1px solid black;
     display: flex;
     /*justify-content: space-between;*/
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     position: relative;
 }
 
-h1 {
-    margin: 7px;
-}
 
 .blogsImg {
     width: 156px;
     height: 156px;
     border-radius: 50%;
-    margin: 0 15px;
+    /*margin: 0 0px;*/
 }

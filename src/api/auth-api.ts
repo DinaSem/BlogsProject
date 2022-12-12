@@ -1,11 +1,14 @@
 import axios, {AxiosResponse} from 'axios';
 
+const url = process.env.REACT_APP_BASE_URL
 
-const instance = axios.create({
-    baseURL: 'https://nest12.onrender.com/',
-    // headers: {
-    //     'Authorization': 'Basic YWRtaW46cXdlcnR5'
-    // }
+export let instance = axios.create({
+    withCredentials: false,
+    baseURL:'https://nest12.onrender.com/',
+    // baseURL: url,
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+    }
 })
 
 // api
@@ -17,6 +20,10 @@ export const authAPI = {
     login(data: LoginDataType) {
         return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
     },
+    refreshToken() {
+        return instance.post('/auth/refresh-token',)
+    },
+
     logout() {
         // return instance.post<{},AxiosResponse<{info:string}>>('/auth/me')
         return instance.post('/auth/logout')

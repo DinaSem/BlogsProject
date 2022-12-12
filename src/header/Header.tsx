@@ -22,13 +22,21 @@ export default function Header() {
                 sx={{zIndex: (theme) => theme.zIndex.drawer + 1,}}
                 style={{background: '#FCFBFB', color: 'black', maxHeight: '60px'}}>
 
-            <Toolbar style={{display: "flex", justifyContent: 'space-between'}}>
-                <Typography variant="h6" noWrap component="div" style={{marginLeft: '64px'}}>
-                    <h2>Blogger Platform</h2>
+            <Toolbar style={{display: "flex", justifyContent: 'space-between', padding:'0 64px'}}>
+                <Typography variant="h6" noWrap component="div" >
+                    <h2 style={{
+                        // fontFamily:"Inter",
+                        fontStyle:'normal',
+                        fontWeight:'600',
+                        fontSize:'26px',
+                        lineHeight:'36px'}}
+                    >
+                        Blogger Platform
+                    </h2>
                 </Typography>
                 {isLoggedIn &&
                     <Box onClick={LogOutHandler} style={{
-                        marginLeft: '64px',
+
                         display: "flex",
                         width: '80px',
                         justifyContent: "space-between",
