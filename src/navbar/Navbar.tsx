@@ -20,10 +20,10 @@ export default function Navbar() {
 
     return (
             <List
-                style={{paddingLeft: '47px',paddingTop: '30px'}}
+                style={{paddingLeft: '47px',paddingTop: '40px'}}
 
             >
-                <Link to={'/blogs'} style={{textDecoration:"none", marginTop:'15px'}}>
+                <Link to={'/blogs'} style={{textDecoration:"none", marginTop:'15px',}}>
                     <ListItem disablePadding>
                         <ListItemButton style={{borderRight:  blogPageIsActive ? '2px solid red':'', padding:'0'}}>
                             <ListItemIcon style={{justifyContent: 'center'}}>
@@ -44,9 +44,9 @@ export default function Navbar() {
                     </ListItem>
                 </Link>
 
-                <Link to={'posts'}style={{textDecoration:"none"}}>
+                <Link to={'posts'}style={{textDecoration:"none",marginTop:'15px'}}>
                     <ListItem disablePadding>
-                        <ListItemButton style={{borderRight:  postPageIsActive ? '2px solid red':'', padding:'0'}}>
+                        <ListItemButton style={{borderRight:  postPageIsActive ? '2px solid red':'', padding:'0',marginTop:'15px'}}>
                             <ListItemIcon style={{justifyContent: 'center'}}>
                                 {postPageIsActive
                                     ? <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

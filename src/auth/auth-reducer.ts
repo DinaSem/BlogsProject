@@ -1,4 +1,4 @@
-import {authAPI, LoginDataType} from "../api/auth-api";
+import {authAPI, LoginDataType, RegisterDataType} from "../api/auth-api";
 import {AppThunk} from "../api/store";
 import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
 import {handleServerNetworkError} from "../common/error-utils";
@@ -143,21 +143,26 @@ export const initializeAppTC = (): AppThunk => async dispatch => {
         dispatch(setAppStatusAC("idle"))
     }
 }
-//
-// export const registrationTC = (values: ValuesType) =>(dispatch: AppDispatch) => {
-//     dispatch(setAppStatusAC("loading"))
-//     authAPI.register({email: values.email, password: values.password})
-//         .then(res=>{
-//             dispatch(registrationAC(true));
-//             alert(`${JSON.stringify(res.data.addedUser.name)} sign up successfully!`)
-//         })
-//         .catch (err=> {
-//             const error = err.response
-//                 ? err.response.data.error
-//                 : err.message
-//             handleServerNetworkError({message: error}, dispatch)
-//         }).finally(() => dispatch(setAppStatusAC("idle")))
-// }
+
+export const registrationTC = (data:RegisterDataType): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.register(data)
+        dispatch(registrationAC(true));
+        // alert(`${JSON.stringify(res.data.addedUser.name)} sign up successfully!`)
+    }catch (e) {
+            const err = e as Error | AxiosError<ErrorsMessagesType>
+            if (axios.isAxiosError(err)) {
+                const error = err.response?.data
+                    ? err.response.data
+                    : err.message;
+                console.log(error)
+                handleServerNetworkError({message: error}, dispatch)
+            }
+        } finally {
+            dispatch(setAppStatusAC("idle"))
+        }
+    }
 //
 // export const passwordRecoveryTC = (email: { email: string }) => {
 //     return (dispatch: AppDispatch) => {

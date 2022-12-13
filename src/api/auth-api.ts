@@ -13,10 +13,10 @@ export let instance = axios.create({
 
 // api
 export const authAPI = {
-    // register(data: RegisterDataType) {
-    //     // return instance.post<RegisterDataType, AxiosResponse<RegisterResponseType>>
-    //     return instance.post('auth/registeration', data)
-    // },
+    register(data: RegisterDataType) {
+        // return instance.post<RegisterDataType, AxiosResponse<RegisterResponseType>>
+        return instance.post('/auth/registration', data)
+    },
     login(data: LoginDataType) {
         return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
     },
@@ -53,11 +53,11 @@ export type LoginResponseType = {
     accessToken: string
 }
 
-// export type RegisterDataType = {
-//     login:string,
-//     password: string
-//     email: string,
-// }
+export type RegisterDataType = {
+    login:string,
+    password: string
+    email: string,
+}
 
 export type RegisterResponseType = {
     addedUser: any,

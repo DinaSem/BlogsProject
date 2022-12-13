@@ -1,6 +1,6 @@
 import * as React from 'react';
 import s from './App1.module.css'
-import {Navigate, Route, Routes} from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import BlogsPage from "../blogs/BlogsPage";
 import {PostsPage} from "../posts/PostsPage";
 import Header from "../header/Header";
@@ -15,7 +15,7 @@ import {CircularProgress} from "@mui/material";
 import {useAppSelector} from "../hooks";
 import {ErrorSnackbar} from "../common/ErrorSnackbar";
 import Login from "../auth/Login";
-import Registration from "../auth/Registration";
+import {Registration} from "../auth/Registration";
 
 const style = {
     position: 'absolute' as 'absolute',
