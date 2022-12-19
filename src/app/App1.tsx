@@ -16,6 +16,7 @@ import {useAppSelector} from "../hooks";
 import {ErrorSnackbar} from "../common/ErrorSnackbar";
 import Login from "../auth/Login";
 import {Registration} from "../auth/Registration";
+import {RegistrationConformation} from "../auth/RegistrationConformation";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -86,6 +87,7 @@ export default function App1() {
                             <Route path='/post/:id' element={<PostDetails/>}/>
                             <Route path='/' element={<Login/>}/>
                             <Route path='/registration' element={<Registration/>}/>
+                            <Route path='/registration-confirmation' element={<RegistrationConformation/>}/>
                         </Routes>
                     </Box>
                 </Box>

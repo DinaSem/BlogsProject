@@ -147,7 +147,7 @@ const Login = () => {
                                     textAlign: 'center',
                                     color: ' #797476',
                                 }}>Don’t have an account?</h6>
-                                <h5><NavLink to={'REGISTRATION'} style={{color: '#F8346B', margin: '7px'}}>Sign
+                                <h5><NavLink to={'registration'} style={{color: '#F8346B', margin: '7px'}}>Sign
                                     Up</NavLink></h5>
                             </FormLabel>
                         </FormControl>

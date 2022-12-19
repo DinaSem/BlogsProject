@@ -3,7 +3,7 @@ import axios, {AxiosResponse} from 'axios';
 const url = process.env.REACT_APP_BASE_URL
 
 export let instance = axios.create({
-    withCredentials: false,
+
     baseURL:'https://nest12.onrender.com/',
     // baseURL: url,
     headers: {
@@ -18,23 +18,24 @@ export const authAPI = {
         return instance.post('/auth/registration', data)
     },
     login(data: LoginDataType) {
-        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
-    },
-    refreshToken() {
-        return instance.post('/auth/refresh-token',)
+        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data,{withCredentials: true})
     },
 
     logout() {
         // return instance.post<{},AxiosResponse<{info:string}>>('/auth/me')
-        return instance.post('/auth/logout')
+        return instance.post('/auth/logout',{},{withCredentials: true})
     },
     me() {
         // return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
         return instance.get('/auth/me')
     },
-    // passwordRecovery(data:RecoveryPasswordDataType){
-    //     return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('auth/forgot', data)
-    // },
+    registration_confirmation(code:string){
+        return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('/auth/registration-confirmation', {code})
+    },
+    refreshToken() {
+        return instance.post('/auth/refresh-token',)
+    },
+
     // setNewPassword(data: SetNewPasswordType){
     //     return instance.post<SetNewPasswordType, AxiosResponse<ResponseType>>('/auth/set-new-password', data)
     // },

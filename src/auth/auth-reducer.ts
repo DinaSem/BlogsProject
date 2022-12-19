@@ -163,6 +163,25 @@ export const registrationTC = (data:RegisterDataType): AppThunk => async dispatc
             dispatch(setAppStatusAC("idle"))
         }
     }
+    export const registration_conformationTC = (code:string): AppThunk => async dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authAPI.registration_confirmation(code)
+        dispatch(registrationAC(true));
+        // alert(`${JSON.stringify(res.data.addedUser.name)} sign up successfully!`)
+    }catch (e) {
+            const err = e as Error | AxiosError<ErrorsMessagesType>
+            if (axios.isAxiosError(err)) {
+                const error = err.response?.data
+                    ? err.response.data
+                    : err.message;
+                console.log(error)
+                handleServerNetworkError({message: error}, dispatch)
+            }
+        } finally {
+            dispatch(setAppStatusAC("idle"))
+        }
+    }
 //
 // export const passwordRecoveryTC = (email: { email: string }) => {
 //     return (dispatch: AppDispatch) => {
