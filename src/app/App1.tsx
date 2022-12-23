@@ -17,6 +17,7 @@ import {ErrorSnackbar} from "../common/ErrorSnackbar";
 import Login from "../auth/Login";
 import {Registration} from "../auth/Registration";
 import {RegistrationConformation} from "../auth/RegistrationConformation";
+import {UsersPage} from "../users/UsersPage";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -88,6 +89,7 @@ export default function App1() {
                             <Route path='/' element={<Login/>}/>
                             <Route path='/registration' element={<Registration/>}/>
                             <Route path='/registration-confirmation' element={<RegistrationConformation/>}/>
+                            <Route path='/users/' element={<UsersPage/>}/>
                         </Routes>
                     </Box>
                 </Box>

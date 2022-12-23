@@ -22,17 +22,29 @@ export default function Header() {
                 sx={{zIndex: (theme) => theme.zIndex.drawer + 1,}}
                 style={{background: '#FCFBFB', color: 'black', maxHeight: '60px'}}>
 
-            <Toolbar style={{display: "flex", justifyContent: 'space-between', padding:'0 64px'}}>
-                <Typography variant="h6" noWrap component="div" >
-                    <h2 style={{
-                        // fontFamily:"Inter",
-                        fontStyle:'normal',
-                        fontWeight:'600',
-                        fontSize:'26px',
-                        lineHeight:'36px'}}
-                    >
-                        Blogger Platform
-                    </h2>
+            <Toolbar style={{display: "flex", justifyContent: 'space-between', padding: '0 64px'}}>
+                <Typography variant="h6" noWrap component="div">
+                    <Box style={{display: "flex", alignItems: 'baseline'}}>
+                        <h2 style={{
+                            // fontFamily:"Inter",
+                            fontStyle: 'normal',
+                            fontWeight: '600',
+                            fontSize: '26px',
+                            lineHeight: '36px',
+                            margin: '0'
+                        }}
+                        >
+                            Blogger Platform
+                        </h2>
+                        <span style={{
+                            margin: '0 0 0 10px',
+                            fontStyle: 'normal',
+                            fontWeight: '400',
+                            fontSize: '12px',
+                            lineHeight: '16px',
+                        }}>Superadmin</span>
+                    </Box>
+
                 </Typography>
                 {isLoggedIn &&
                     <Box onClick={LogOutHandler} style={{

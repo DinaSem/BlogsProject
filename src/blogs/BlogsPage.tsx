@@ -7,7 +7,7 @@ import {Search} from '../searchPanel/Search';
 import {Blog} from "./blog/Blog";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {fetchBlogsTC} from "./blogs-reducer";
+import {fetchBlogsTC, setPageNumberOfBlogsAC} from "./blogs-reducer";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {Navigate, useNavigate} from "react-router-dom";
 
@@ -21,6 +21,7 @@ export default function BlogsPage() {
     const blogs = useAppSelector(state => state.blogs.blogsData)
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -29,23 +30,32 @@ export default function BlogsPage() {
                                                           blogName={b.name}
                                                           websiteUrl={b.websiteUrl}
                                                           description={b.description}/>)
+
     const onClickShowMoreHandler = () => {
-        setCurrentPage(currentPage + 1)
+        dispatch(setPageNumberOfBlogsAC(pageNumber+1))
     }
+
+
     const onClickAddBlogHandler = () => {
         navigate(`/addblog`)
 
     }
 
     useEffect(() => {
+        if (!blogs) return
+        dispatch(setPageNumberOfBlogsAC(1))
+    }, [])
+
+    useEffect(() => {
         dispatch(fetchBlogsTC())
-    }, [dispatch, searchNameTerm, pageSize, pageNumber, currentPage, sortDirection, sortBy])
+    }, [dispatch, searchNameTerm, pageSize, pageNumber, sortDirection, sortBy])
+
 
 
     if (!isLoggedIn) {
         return <Navigate to={'/'}/>
     }
-    // console.log(isLoggedIn)
+
     return (
         <Container
             style={{maxWidth: '940px', minHeight: '100vh', paddingLeft: '0', paddingRight: '0', margin: '29px 20px'}}
@@ -82,8 +92,10 @@ export default function BlogsPage() {
                     backgroundColor: '#f6f2f2',
                     width: '100%'
                 }}>
-                    <Button variant="outlined" style={{width: '153px', color: "black", border: '1px solid black',}}
-                            onClick={onClickShowMoreHandler} disabled={blogs.pagesCount === currentPage && true}>
+                    <Button variant="outlined" style={{width: '153px', color: "black", border: '1px solid black'}}
+                            onClick={onClickShowMoreHandler}
+                            disabled={blogs.pagesCount === pageNumber && true}
+                    >
                         {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
                         Show more
                         <KeyboardArrowDownIcon/>
