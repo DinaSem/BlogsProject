@@ -17,6 +17,7 @@ import {UserType} from "../../api/users-api";
 import {useNavigate} from "react-router-dom";
 import {registrationTC} from "../../auth/auth-reducer";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {addUserTC, fetchUsersTC} from "../../users/users-reducer";
 
 export type ValuesType = {
     login: string;
@@ -40,6 +41,7 @@ export const AddUserModal = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const users = useAppSelector(state => state.users.usersData.items)
     const [open, setOpen] = useState<boolean>(false)
     const handleOpen = () => setOpen(true)
 
@@ -57,18 +59,18 @@ export const AddUserModal = () => {
         validate: (values: ValuesType) => {
             let errors: FormikErrors<FormikErrorType> = {};
 
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+
             if (!values.login) {
                 errors.login = 'Required';
             } else if (values.login.length < 3) {
                 errors.login = 'Login cannot be less than 3 characters';
             } else if (values.login.length > 10) {
                 errors.login = 'Login cannot be more than 10 characters';
-            }
-
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
             }
 
             if (!values.password || values.password.length === 0) {
@@ -84,9 +86,8 @@ export const AddUserModal = () => {
 
         onSubmit: values => {
             formik.resetForm();
-            dispatch(registrationTC(values));
-            setEmail(values.email)
-            // console.log('EMAIL:', emailAddress)
+            dispatch(addUserTC(values.login, values.password, values.email));
+            handleClose()
         },
     });
 
@@ -106,13 +107,11 @@ export const AddUserModal = () => {
     //     showConfirmPassword(false);
     // }, [showConfirmPassword])
 
-    const signUp = useAppSelector(state => state.auth.signUp);
+
 
     useEffect(() => {
-        if (signUp) {
-            // navigate(LOGIN)
-        }
-    }, [signUp])
+        dispatch(fetchUsersTC())
+    }, [dispatch])
 
     // @ts-ignore
     return (

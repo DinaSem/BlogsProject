@@ -24,10 +24,10 @@ export const UsersPage = () => {
 
 
     }
-    // useEffect(() => {
-    //     if (users && users.items.length > 0) return
-    //     dispatch(fetchUsersTC())
-    // }, [])
+    useEffect(() => {
+        if (users && users.length > 0) return
+        dispatch(fetchUsersTC())
+    }, [])
 
     useEffect(() => {
         console.log('from UseEffect in UsersPage')

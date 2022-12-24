@@ -167,7 +167,7 @@ export const addUserTC = (login: string, password: string, email: string): AppTh
         const res = await usersApi.createUser(login, password, email)
         dispatch(addUserAC(res.data.item))
         dispatch(setAppStatusAC('succeeded'))
-        dispatch(setAppSuccessAC('Blog has added'))
+        dispatch(setAppSuccessAC('User has added'))
 
     } catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
