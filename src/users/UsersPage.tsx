@@ -1,31 +1,43 @@
-import React, {useEffect, useState} from 'react';
-import Box from "@mui/material/Box";
+import React, {useEffect} from 'react';
 import TableContainer from '@mui/material/TableContainer/TableContainer';
-import {IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {NavLink} from "react-router-dom";
+import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {fetchBlogsTC} from "../blogs/blogs-reducer";
 import {fetchUsersTC} from "./users-reducer";
 import s from "../blogs/blogs.module.css";
-import {Search} from "../searchPanel/Search";
-import {SelectComp} from "../searchPanel/SelectComp";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import {UsersPagination} from "./UsersPagination";
+import {DeleteBlogModal} from "../modal windows/blogs modal/delete blog modal/DeleteBlogModal";
+import {DeleteUserModal} from "../modal windows/users modal/DeleteUserModal";
+import {AddUserModal} from "../modal windows/users modal/AddUserModal";
 
 export const UsersPage = () => {
-    const users = useAppSelector(state => state.users.usersData)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const users = useAppSelector(state => state.users.usersData.items)
+    const pageNumber = useAppSelector(state => state.users.params.pageNumber)
     const dispatch = useAppDispatch()
 
     const onClickAddUserHandler = () => {
 
 
     }
+    // useEffect(() => {
+    //     if (users && users.items.length > 0) return
+    //     dispatch(fetchUsersTC())
+    // }, [])
 
     useEffect(() => {
+        console.log('from UseEffect in UsersPage')
         dispatch(fetchUsersTC())
-    }, [dispatch])
-    console.log(users.items)
+    }, [dispatch, pageNumber])
+
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
 
     return (
         <Container
@@ -33,18 +45,18 @@ export const UsersPage = () => {
             className={s.wrapper}>
             <h3>Users</h3>
             <div style={{display: "flex", justifyContent: "end", margin: "20px 0 "}}>
-                <Button variant="outlined" style={{
-                    width: '118px',
-                    color: "white",
-                    border: '1px solid black',
-                    background: '#F8346B',
-                    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3)',
-                    borderRadius: '2px'
-                }}
-                        onClick={onClickAddUserHandler}>
-                    {/*onClick={onClickShowMoreHandler} disabled={true}>*/}
-                    Add user
-                </Button>
+                <AddUserModal/>
+                {/*<Button variant="outlined" style={{*/}
+                {/*    width: '118px',*/}
+                {/*    color: "white",*/}
+                {/*    border: '1px solid black',*/}
+                {/*    background: '#F8346B',*/}
+                {/*    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3)',*/}
+                {/*    borderRadius: '2px'*/}
+                {/*}}*/}
+                {/*        onClick={onClickAddUserHandler}>*/}
+                {/*    Add user*/}
+                {/*</Button>*/}
             </div>
             <TableContainer>
                 <Table sx={{maxWidth: 940}} aria-label="simple table">
@@ -70,7 +82,7 @@ export const UsersPage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.items.map((user, i) => {
+                        {users.map((user, i) => {
 
                             let day = user.createdAt.slice(8, 10)
                             let month = user.createdAt.slice(5, 7)
@@ -88,7 +100,8 @@ export const UsersPage = () => {
                                     <TableCell >{user.id}</TableCell>
                                     <TableCell >{day + '.' + month + '.' + year}</TableCell>
                                     <TableCell align="right">
-                                        <DeleteOutlineIcon />
+                                        <DeleteUserModal userId={user.id} userName={user.login} />
+
                                     </TableCell>
                                 </TableRow>
                             )
@@ -96,6 +109,7 @@ export const UsersPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <UsersPagination/>
         </Container>
     );
 };

@@ -14,18 +14,20 @@ export const usersApi = {
     getUsers(params: UsersGetRequestDataType) {
         return instance.get<UsersGetRequestDataType, AxiosResponse<UsersGetResponseDataType>>('users', {params});
     },
+    deleteUser(usersId: string) {
+        return instance.delete(`users/${usersId}`);
+    },
+    createUser(login: string, password: string, email: string) {
+        return instance.post<{ login: string, password: string, email: string}, AxiosResponse<{ item: UserType }>>('users', {login,password,email});
+    },
+
     // getBlogDetail(blogId: string) {
     //     return instance.get<BlogType>(`blogs/${blogId}`);
     // },
     // getBlogsPosts(blogId: string) {
     //     return instance.get<string, AxiosResponse<BlogsPostsGetResponseDataType>>(`blogs/${blogId}/posts`);
     // },
-    // createBlog(name: string, description: string, websiteUrl: string) {
-    //     return instance.post<{ name: string, youtubeUrl:string}, AxiosResponse<{ item: BlogType }>>('blogs', {name,description,websiteUrl});
-    // },
-    // deleteBlog(blogId: string) {
-    //     return instance.delete(`blogs/${blogId}`);
-    // },
+
     // updateBlog(blogId: string, name?: string, websiteUrl?: string, description?:string) {
     //     return instance.put<{ name: string, websiteUrl: string, description:string}, AxiosResponse<ResponseType>>(`blogs/${blogId}`, {name, websiteUrl,description});
     // },
@@ -39,7 +41,6 @@ export type UsersGetRequestDataType = {
     sortDirection?: string
     searchLoginTerm?:string
     searchEmailTerm?:string
-
 }
 
 export type UsersGetResponseDataType = {
@@ -56,6 +57,7 @@ export type UserType = {
     email: string
     createdAt: string
 }
+
 // export type BlogsPostsGetResponseDataType = {
 //     pagesCount: number,
 //     page: number,

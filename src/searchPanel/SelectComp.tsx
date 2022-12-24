@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {FormControl, MenuItem, SelectChangeEvent} from "@mui/material";
 import {Select} from "@mui/material";
 import {useAppDispatch} from "../hooks";
-import {fetchBlogsTC, sortDirectionBlogsAC} from "../blogs/blogs-reducer";
+import {sortDirectionBlogsAC} from "../blogs/blogs-reducer";
 
 export const SelectComp = () => {
     const valuesOfSelect = ['New blogs first', 'Old blogs first', 'From A to Z', 'From Z to A'];
@@ -28,9 +28,12 @@ export const SelectComp = () => {
     return (
         <FormControl sx={{m: 1, minWidth: '27%'}} style={{margin: '0px',backgroundColor: '#f6f2f2'
             }} size="small">
-            <Select value={sortValue} onChange={handleChange}  style={{height:'38px',backgroundColor: '#f6f2f2'}}>
+            <Select value={sortValue}
+                    onChange={handleChange}
+                    style={{height:'38px',backgroundColor: '#f6f2f2'}}>
                 {valuesOfSelect.map((v,i)=>{
-                    return <MenuItem  style={{height:'35px',backgroundColor: '#f6f2f2' }} key={i} value={v}>{v}</MenuItem>
+                    return <MenuItem  style={{height:'35px',backgroundColor: '#f6f2f2' }}
+                                      key={i} value={v}>{v}</MenuItem>
                 })}
             </Select>
         </FormControl>
