@@ -26,8 +26,7 @@ export const authAPI = {
         return instance.post('/auth/logout',{},{withCredentials: true})
     },
     me() {
-        // return instance.get<{},AxiosResponse<LoginResponseType>>('/auth/me')
-        return instance.get('/auth/me')
+        return instance.get<{},AxiosResponse<MeResponseType>>('/auth/me')
     },
     registration_confirmation(code:string){
         return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('/auth/registration-confirmation', {code})
@@ -82,15 +81,21 @@ export type PasswordResponseType = {
     success: boolean
 }
 
-export type ProfileType = {
-    _id: string
-    email: string
-    name: string
-    avatar?: string
-    publicCardPacksCount: number // количество колод
-    created: Date
-    updated: Date
-    isAdmin: boolean
-    error?: string
+export type MeResponseType = {
+    email: string,
+    login:string,
+    userId:string,
 }
+
+// export type ProfileType = {
+//     _id: string
+//     email: string
+//     name: string
+//     avatar?: string
+//     publicCardPacksCount: number // количество колод
+//     created: Date
+//     updated: Date
+//     isAdmin: boolean
+//     error?: string
+// }
 

@@ -7,7 +7,7 @@ export const UsersPagination = () => {
 
     const dispatch = useAppDispatch();
     const pageCount = useAppSelector(state => state.users.usersData.pagesCount)
-    const cardPacksTotalCount = useAppSelector(state => state.users.usersData.totalCount);
+    const usersTotalCount = useAppSelector(state => state.users.usersData.totalCount) || 0;
     const pageNumber = useAppSelector(state => state.users.params.pageNumber);
     const pageSize = useAppSelector(state => state.users.params.pageSize);
 
@@ -23,7 +23,7 @@ export const UsersPagination = () => {
         <Grid container spacing={1} marginTop={'28px'} marginBottom={'46px'}>
             <Stack direction="row" spacing={2} alignItems="center" textAlign={'center'}>
                 <Pagination
-                    count={Math.ceil(cardPacksTotalCount / pageCount)}
+                    count={Math.ceil(usersTotalCount / pageSize)}
                     page={pageNumber}
                     onChange={handlePaginationChange}
                     shape="rounded"/>

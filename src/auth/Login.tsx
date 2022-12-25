@@ -76,8 +76,6 @@ const Login = () => {
         validate,
         onSubmit: values => {
             dispatch(loginTC(values))
-            // console.log(values)
-            console.log(errorFromServer)
         },
     });
     if (isLoggedIn) {
@@ -133,7 +131,7 @@ const Login = () => {
                                                                                           }}>Forgot password?</NavLink>
                                 </h6>
                                 <Button type={'submit'} variant={'contained'}
-                                        style={{color: 'white', background: '#F8346B', minWidth: '330px'}} fullWidth>
+                                        style={{color: 'white', background: '#F8346B', minWidth: '330px',textTransform:'none',}} fullWidth>
                                     Sign In
                                 </Button>
                             </FormGroup>

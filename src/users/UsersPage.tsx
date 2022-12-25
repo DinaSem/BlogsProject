@@ -19,14 +19,15 @@ export const UsersPage = () => {
     const users = useAppSelector(state => state.users.usersData.items)
     const pageNumber = useAppSelector(state => state.users.params.pageNumber)
     const dispatch = useAppDispatch()
-
+    console.log(users)
     const onClickAddUserHandler = () => {
 
 
     }
     useEffect(() => {
-        if (users && users.length > 0) return
-        dispatch(fetchUsersTC())
+        if (!users?.length){
+            dispatch(fetchUsersTC())
+        }
     }, [])
 
     useEffect(() => {
@@ -82,7 +83,7 @@ export const UsersPage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user, i) => {
+                        {users?.map((user, i) => {
 
                             let day = user.createdAt.slice(8, 10)
                             let month = user.createdAt.slice(5, 7)
