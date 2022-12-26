@@ -29,9 +29,10 @@ export const defaultAPI = {
 // types
 
 
-export type DefaultResponseType = {
+export type DefaultType = {
     ip: string,
     title:string,
     lastActiveDate:string,
     deviceId:string,
 }
+export type DefaultResponseType = DefaultType[]

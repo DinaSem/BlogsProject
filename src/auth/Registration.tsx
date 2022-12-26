@@ -150,6 +150,8 @@ export const Registration = () => {
                                     }}
                                     {...formik.getFieldProps("password")}
                                 />
+                                {/*The link has been sent by email.*/}
+                                {/*If you don’t receive an email, send link again*/}
                                 <RegistrationModal email={emailAddress}/>
 
                                 {/*{JSON.stringify(formik.errors).length === 2*/}
@@ -166,6 +168,7 @@ export const Registration = () => {
                                 <h4><NavLink to={'/'} style={{color: 'blue'}}>Sign In</NavLink></h4>
                             </FormLabel>
                         </FormControl>
+
                     </form>
                 </Paper>
             </Grid>

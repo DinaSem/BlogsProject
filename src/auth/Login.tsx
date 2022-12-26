@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useFormik} from 'formik';
 import authpicture from '../pictures/auth.png'
+import s from './login.module.css'
 
 import {Navigate, NavLink} from 'react-router-dom';
 import {
@@ -82,13 +83,13 @@ const Login = () => {
         return <Navigate to={'blogs'}/>
     }
     return (
-        <Box style={{display: "flex", justifyContent: 'space-around', marginTop: "72px", gap: "70px"}}>
+        <Box className={s.loginWrapper}>
             <Grid width={"378px"}>
-                <Paper elevation={14} style={{padding: "29px 24px", maxHeight: "392px", maxWidth: '378px'}}>
+                <Paper elevation={14}  className={s.login_loginForm_wrapper}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl fullWidth>
-                            <FormLabel style={{textAlign: "center", marginBottom: '31px'}}>
-                                <h2 style={{fontWeight: 500, fontSize: '20px', lineHeight: '24px', margin: '0'}}>
+                            <FormLabel className={s.login_loginForm_label}>
+                                <h2>
                                     Sign in
                                 </h2>
                             </FormLabel>

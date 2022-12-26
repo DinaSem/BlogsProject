@@ -3,14 +3,10 @@ import TableContainer from '@mui/material/TableContainer/TableContainer';
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks";
-import {fetchBlogsTC} from "../blogs/blogs-reducer";
 import {fetchUsersTC} from "./users-reducer";
 import s from "../blogs/blogs.module.css";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {UsersPagination} from "./UsersPagination";
-import {DeleteBlogModal} from "../modal windows/blogs modal/delete blog modal/DeleteBlogModal";
 import {DeleteUserModal} from "../modal windows/users modal/DeleteUserModal";
 import {AddUserModal} from "../modal windows/users modal/AddUserModal";
 
@@ -47,17 +43,6 @@ export const UsersPage = () => {
             <h3>Users</h3>
             <div style={{display: "flex", justifyContent: "end", margin: "20px 0 "}}>
                 <AddUserModal/>
-                {/*<Button variant="outlined" style={{*/}
-                {/*    width: '118px',*/}
-                {/*    color: "white",*/}
-                {/*    border: '1px solid black',*/}
-                {/*    background: '#F8346B',*/}
-                {/*    boxShadow: '0px 4px 18px rgba(248, 52, 107, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3)',*/}
-                {/*    borderRadius: '2px'*/}
-                {/*}}*/}
-                {/*        onClick={onClickAddUserHandler}>*/}
-                {/*    Add user*/}
-                {/*</Button>*/}
             </div>
             <TableContainer>
                 <Table sx={{maxWidth: 940}} aria-label="simple table">
@@ -94,8 +79,7 @@ export const UsersPage = () => {
                                     hover
                                     key={i}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                    style={{backgroundColor: '#f6f2f2'}}
-                                >
+                                    style={{backgroundColor: '#f6f2f2'}}>
                                     <TableCell >{user.login}</TableCell>
                                     <TableCell >{user.email}</TableCell>
                                     <TableCell >{user.id}</TableCell>

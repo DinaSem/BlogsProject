@@ -10,7 +10,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 export default function Header() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const username = useAppSelector(state => state.auth.profileData.login)
+    const username = useAppSelector(state => state.auth.profileData?.login)
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate();

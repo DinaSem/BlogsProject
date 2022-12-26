@@ -3,6 +3,7 @@ import {Button, Stack} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {BasicModal} from "../basic modal/BasicModal";
+import {useNavigate} from "react-router-dom";
 
 
 type PropsType={
@@ -12,13 +13,14 @@ type PropsType={
 
 export const RegistrationModal = (props:PropsType) => {
    // const blogs = useAppSelector(state => state.blogs.blogsData.items)
-
+    const navigate = useNavigate();
 
     const [open, setOpen] = useState<boolean>(false)
     const handleOpen = () => setOpen(true)
 
     const handleClose = () => {
         setOpen(false)
+        navigate('/')
     }
     return (
         <Box style={{display: 'inline-block'}}>
