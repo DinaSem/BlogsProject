@@ -7,7 +7,7 @@ import {defaultAPI, DefaultResponseType} from "../api/default-api";
 
 //TODO change total count
 const initialState = {
-    profileData: {} as DefaultResponseType,
+    profileData: [] as DefaultResponseType,
 }
 
 
