@@ -1,6 +1,6 @@
 import * as React from 'react';
 import s from './App1.module.css'
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import BlogsPage from "../blogs/BlogsPage";
 import {PostsPage} from "../posts/PostsPage";
 import Header from "../header/Header";
@@ -42,13 +42,10 @@ export default function App1() {
     // }
      useEffect(() => {
         dispatch(initializeAppTC());
-    }, []);
+    }, [isInitialized]);
 
     // if (!isInitialized) {
-    //     return <div
-    //         style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
-    //         <CircularProgress />
-    //     </div>
+    //     return <Navigate to={'/'}/>
     // }
     return (
 

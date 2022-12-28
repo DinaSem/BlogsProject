@@ -19,10 +19,10 @@ export const defaultAPI = {
         return instance.get<{}, AxiosResponse<DefaultResponseType>>('/security/devices',{withCredentials: true})
     },
     removeDevices() {
-        return instance.delete('/security/devices')
+        return instance.delete('/security/devices',{withCredentials: true})
     },
     removeSomeDevice(deviceId:string) {
-        return instance.delete( `security/devices/${deviceId}`)
+        return instance.delete( `security/devices/${deviceId}`,{withCredentials: true})
     },
 
 }

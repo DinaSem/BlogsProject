@@ -49,18 +49,25 @@ export default function Header() {
 
                 </Typography>
                 {isLoggedIn &&
-                    <Box style={{display: "flex",justifyContent: "space-between",}}>
-                       <Link to={'/profile'} style={{textDecoration:"none", color: 'black'}}> <p style={{fontSize:'16px', fontWeight: '600', lineHeight: '24px', borderBottom: '1px dashed #1A1718', marginRight:'30px', margin:'0 30px'}}>{username}</p></Link>
-                    <Box onClick={LogOutHandler} style={{
-                        display: "flex",
-                        width: '80px',
-                        height: '20px',
-                        justifyContent: "space-between",
-                        cursor: "pointer"
-                    }}>
-                        <img src={logoutImg} style={{width: '18px'}}/>
-                        <span style={{fontSize: "14px"}}>login out</span>
-                    </Box>
+                    <Box style={{display: "flex", justifyContent: "space-between",}}>
+                        <Link to={'/profile'} style={{textDecoration: "none", color: 'black'}}><p style={{
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            lineHeight: '24px',
+                            borderBottom: '1px dashed #1A1718',
+                            marginRight: '30px',
+                            margin: '0 30px'
+                        }}>{username}</p></Link>
+                        <Box onClick={LogOutHandler} style={{
+                            display: "flex",
+                            width: '80px',
+                            height: '20px',
+                            justifyContent: "space-between",
+                            cursor: "pointer"
+                        }}>
+                            <img src={logoutImg} style={{width: '18px'}}/>
+                            <span style={{fontSize: "14px"}}>login out</span>
+                        </Box>
                     </Box>
                 }
             </Toolbar>

@@ -3,23 +3,37 @@ import s from "./profile.module.css";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import {useAppDispatch, useAppSelector} from "../hooks";
-import {fetchProfileDataTC} from "./profile-reducer";
+import {fetchProfileDataTC, removeAllOtherDevicesTC, removeDeviceTC} from "./profile-reducer";
 import {Button} from "@mui/material";
 import {decodeToken} from "react-jwt";
 import {Navigate} from "react-router-dom";
 import {parseUserAgent} from 'react-device-detect';
-import chrome from'../pictures/chrome.png'
-import edge from'../pictures/edge.png'
+import TabletIcon from '@mui/icons-material/Tablet';
+import cellPhone from '../pictures/cell-phone.png'
+import imac from '../pictures/imac.png'
+import chrome from '../pictures/chrome.png'
+import edge from '../pictures/microsoft.png'
+import opera from '../pictures/opera.png'
+import yandex from '../pictures/yandex.png'
+import safari from '../pictures/safari.png'
+import apple from '../pictures/apple.png'
+import logoutImg from "../pictures/logout.png";
 
-// const icon = getIcon(browser);
-// function getIcon(browser:string) {
-//     if (browser === "Chrome") {
-//         return chrome;
-//     } else if (browser === "Edge") {
-//         return edge;
-//     }
-//     return icon0;
-// }
+
+function getIcon(browser: string) {
+    if (browser === "Chrome") {
+        return chrome;
+    } else if (browser === "Edge") {
+        return edge;
+    } else if (browser === "Opera") {
+        return opera;
+    } else if (browser === 'Yandex') {
+        return yandex;
+    } else if (browser === "Safari") {
+        return safari;
+    }
+    return cellPhone;
+}
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch()
@@ -37,21 +51,27 @@ export const ProfilePage = () => {
     //другие девайсы, с которых был осуществлен вход
     const allOtherDevices = profileData.filter(d => d.deviceId !== myDecodedToken?.deviceId)
 
-//TODO решить вопрос с типизацией
-    // @ts-ignore
-    const userDeviceInfo = parseUserAgent(infoOfThisDevice)
-    // @ts-ignore
-    const allDev = allOtherDevices.map(d=>parseUserAgent(d.title))
 
-    console.log('allOtherDevices',allOtherDevices)
-    console.log('allDev',allDev)
+    const userDeviceInfo = parseUserAgent(infoOfThisDevice?.title)
+    const allDev = allOtherDevices.map(d => parseUserAgent(d.title))
 
+    // console.log('allOtherDevices', allOtherDevices)
+    // console.log('allDev', allDev)
+    // console.log('userDeviceInfo', userDeviceInfo)
+
+    const TerminateAllOtherSessionHandler = () => {
+        dispatch(removeAllOtherDevicesTC())
+    }
+
+    const LogOutFromDeviceHandler = (deviceId: string) => {
+        dispatch(removeDeviceTC(deviceId))
+    }
 
     useEffect(() => {
         if (!profileData) {
             dispatch(fetchProfileDataTC())
         }
-    }, [dispatch])
+    }, [dispatch, removeDeviceTC, removeAllOtherDevicesTC])
 
     useEffect(() => {
         dispatch(fetchProfileDataTC())
@@ -63,7 +83,13 @@ export const ProfilePage = () => {
 
     return (
         <Container
-            style={{maxWidth: '940px', minHeight: '100vh', paddingLeft: '0', paddingRight: '0', margin: '29px 20px'}}
+            style={{
+                maxWidth: '940px',
+                minHeight: '100vh',
+                paddingLeft: '0',
+                paddingRight: '0',
+                margin: '29px 20px'
+            }}
             className={s.wrapper}>
             <h3>Profile settings</h3>
             <h5>Devices</h5>
@@ -76,12 +102,12 @@ export const ProfilePage = () => {
                     boxShadow: '0px 5px 20px rgba(29, 33, 38, 0.03), 0px 1px 2px rgba(29, 33, 38, 0.1)',
                     borderRadius: '2px',
                     padding: '17px',
-                    display:"flex",
+                    display: "flex",
                 }}>
-                    <Box style={{margin:'20px 10px'}}>
-                        <img src={
-                            userDeviceInfo?.browser.name === 'Chrome'? chrome:edge
-                        } alt="" style={{width:'36px'}}/>
+                    <Box style={{margin: '20px 10px'}}>
+                        <img src={getIcon(userDeviceInfo?.browser.name)}
+
+                             alt="" style={{width: '36px'}}/>
                     </Box>
                     <Box>{/*<h4>{userDeviceInfo?.title}</h4>*/}
                         <h4>{userDeviceInfo?.browser.name}</h4>
@@ -100,7 +126,7 @@ export const ProfilePage = () => {
                         textTransform: 'none',
                         margin: '20px 0',
 
-                    }}>
+                    }} onClick={TerminateAllOtherSessionHandler}>
                         Terminate all other session
                     </Button>
                 </Box>
@@ -108,30 +134,42 @@ export const ProfilePage = () => {
 
                 <p>Active sessions</p>
 
-                    {allOtherDevices.map((d:any,i:number)=>{
-                        let day = d?.lastActiveDate.slice(8, 10)
-                        let month = d?.lastActiveDate.slice(5, 7)
-                        let year = d?.lastActiveDate.slice(0, 4)
-                        return(
-                            <Box style={{
-                                background: '',
-                                width: "940px",
-                                height: "120px",
-                                boxShadow: '0px 5px 20px rgba(29, 33, 38, 0.03), 0px 1px 2px rgba(29, 33, 38, 0.1)',
-                                borderRadius: '2px',
-                                padding: '17px',
-                                display:"flex",
-                            }}key={i}>
-                                <Box style={{margin:'20px 10px'}}>
-                                    <img src={parseUserAgent(d.title)?.browser.name === 'Chrome'? chrome:edge} alt="" style={{width:'36px'}}/>
-                                </Box>
+                {allOtherDevices.map((d: any, i: number) => {
+                    let day = d?.lastActiveDate.slice(8, 10)
+                    let month = d?.lastActiveDate.slice(5, 7)
+                    let year = d?.lastActiveDate.slice(0, 4)
+                    return (
+                        <Box style={{
+                            background: '',
+                            width: "940px",
+                            height: "120px",
+                            boxShadow: '0px 5px 20px rgba(29, 33, 38, 0.03), 0px 1px 2px rgba(29, 33, 38, 0.1)',
+                            borderRadius: '2px',
+                            padding: '17px',
+                            display: "flex",
+                        }} key={i}>
+                            <Box style={{margin: '20px 10px'}}>
+                                <img src={getIcon(parseUserAgent(d.title)?.browser.name)} alt=""
+                                     style={{width: '36px'}}/>
+                            </Box>
+                            <Box style={{display: "flex", justifyContent: "space-between", width: '100%'}}>
                                 <Box><h4>{parseUserAgent(d.title)?.browser.name}</h4>
                                     <p>IP: {d?.ip}</p>
                                     <p>Last visit:{day + '.' + month + '.' + year}</p>
                                 </Box>
-                            </Box>
-                            )
-                    })}
+                                <Box onClick={() => LogOutFromDeviceHandler(d.deviceId)} style={{
+                                    display: "flex",
+                                    width: '80px',
+                                    height: '20px',
+                                    justifyContent: "space-between",
+                                    cursor: "pointer"
+                                }}>
+                                    <img src={logoutImg} style={{width: '18px'}}/>
+                                    <span style={{fontSize: "14px"}}>login out</span>
+                                </Box></Box>
+                        </Box>
+                    )
+                })}
             </Box>
 
         </Container>

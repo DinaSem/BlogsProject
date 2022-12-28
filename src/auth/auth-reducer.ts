@@ -119,7 +119,7 @@ export const logoutTC = (): AppThunk => async dispatch => {
         dispatch(setAppStatusAC('succeeded'))
 
     } catch (e) {
-        //dispatch(loginAC(false))
+        dispatch(loginAC(false))
         const err = e as Error | AxiosError<ErrorsMessagesType>
         //await authAPI.refreshToken()
 
