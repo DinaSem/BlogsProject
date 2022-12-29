@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useFormik} from 'formik';
-import authpicture from '../pictures/auth.png'
+import authpicture from '../../pictures/auth.png'
 import s from './login.module.css'
 
 import {Navigate, NavLink} from 'react-router-dom';
@@ -16,9 +16,9 @@ import {
     TextField
 } from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {useAppDispatch, useAppSelector} from "../hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import Box from "@mui/material/Box";
-import {loginTC} from "./auth-reducer";
+import {loginTC} from "../auth-reducer";
 
 
 type FormikErrorType = {
@@ -46,6 +46,9 @@ const Login = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+    const goToRegistrationOnClickHandler = () => {
+        <NavLink to={'/registration'}/>
+    }
     const validate = (values: FormikValuesType) => {
         const errors: FormikErrorType = {};
         if (!values.loginOrEmail) {
@@ -89,9 +92,7 @@ const Login = () => {
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl fullWidth>
                             <FormLabel className={s.login_loginForm_label}>
-                                <h2>
-                                    Sign in
-                                </h2>
+                                <h2>Sign in</h2>
                             </FormLabel>
                             <FormGroup style={{maxHeight: '300px'}}>
                                 <TextField
@@ -146,8 +147,8 @@ const Login = () => {
                                     textAlign: 'center',
                                     color: ' #797476',
                                 }}>Don’t have an account?</h6>
-                                <h5><NavLink to={'registration'} style={{color: '#F8346B', margin: '7px'}}>Sign
-                                    Up</NavLink></h5>
+                                <h5 style={{color: '#F8346B', margin: "7px"}} onClick={goToRegistrationOnClickHandler}>
+                                </h5>
                             </FormLabel>
                         </FormControl>
                     </form>

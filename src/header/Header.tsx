@@ -5,8 +5,9 @@ import Typography from '@mui/material/Typography';
 import {useAppDispatch, useAppSelector} from "../hooks";
 import logoutImg from '../pictures/logout.png'
 import Box from "@mui/material/Box";
-import {logoutTC} from "../auth/auth-reducer";
-import {Link, useNavigate} from "react-router-dom";
+import {initializeAppTC, logoutTC} from "../auth/auth-reducer";
+import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function Header() {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
@@ -14,11 +15,22 @@ export default function Header() {
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
+    const location = useLocation()
 
     const LogOutHandler = () => {
         dispatch(logoutTC())
         navigate('/')
     }
+    useEffect(()=>{
+        if(isLoggedIn){
+            dispatch(initializeAppTC())
+        }
+    },[location])
+
+    // if (!isLoggedIn) {
+    //     return <Navigate to={'/'}/>
+    // }
+
     return (
         <AppBar position='absolute'
                 sx={{zIndex: (theme) => theme.zIndex.drawer + 1,}}
@@ -34,8 +46,7 @@ export default function Header() {
                             fontSize: '26px',
                             lineHeight: '36px',
                             margin: '0'
-                        }}
-                        >
+                        }}>
                             Blogger Platform
                         </h2>
                         <span style={{

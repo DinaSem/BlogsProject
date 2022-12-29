@@ -89,8 +89,9 @@ export const loginTC = (data: LoginDataType,): AppThunk => async dispatch => {
         const res = await authAPI.login(data)
 
         const accessToken = res.data.accessToken;
-        console.log(res.headers)
+        // console.log(res.headers)
         localStorage.setItem('jwt_token', accessToken)
+        console.log('accessToken from login',accessToken)
         dispatch(loginAC(true))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -138,11 +139,29 @@ export const logoutTC = (): AppThunk => async dispatch => {
 export const initializeAppTC = (): AppThunk => async dispatch => {
     dispatch(setAppStatusAC("loading"))
     try {
+        console.log(localStorage.getItem('jwt_token'))
         const res = await authAPI.me()
         dispatch(loginAC(true))
         dispatch(setProfileAC(res.data));
     } catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
+        try {
+            const res =  await authAPI.refreshToken()
+            const accessToken = res.data.accessToken;
+            localStorage.setItem('jwt_token', accessToken)
+            console.log('refresh',accessToken)
+        }
+        catch (e) {
+            dispatch(loginAC(false))
+            if (axios.isAxiosError(err)) {
+                const error = err.response?.data
+                    ? err.response.data
+                    : err.message;
+                console.log(error)
+                handleServerNetworkError({message: error}, dispatch)
+            }
+        }
+
         if (axios.isAxiosError(err)) {
             const error = err.response?.data
                 ? err.response.data
@@ -150,6 +169,7 @@ export const initializeAppTC = (): AppThunk => async dispatch => {
             console.log(error)
             handleServerNetworkError({message: error}, dispatch)
         }
+
     } finally {
         dispatch(setIsInitializedAC(true))
         dispatch(setAppStatusAC("idle"))

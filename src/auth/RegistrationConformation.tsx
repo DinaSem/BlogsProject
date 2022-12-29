@@ -1,30 +1,39 @@
 import React from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import confirmImg from '../pictures/registr-confirm.png'
 import Button from "@mui/material/Button";
+import {logoutTC} from "./auth-reducer";
 
 export const RegistrationConformation = () => {
+    const navigate = useNavigate();
     const {code} = useParams()
+
+    const goToLoginPageOnClickHandler = () => {
+        navigate('/')
+    }
+    
     return (
         <Box style={{textAlign: 'center', marginTop: '60px', display: "block"}}>
+            <Box style={{display:"flex",justifyContent:"center"}}>
+                <Typography style={{
+                    fontWeight: 500,
+                    fontSize: '20px',
+                    lineHeight: '24px',
+                    maxWidth: '295px',
+                    textAlign: 'center'
+                }}>
+                    Congratulations!
+                    Your email has been confirmed
+                </Typography>
+            </Box>
 
-            <Typography style={{
-                fontWeight: 500,
-                fontSize: '20px',
-                lineHeight: '24px',
-                maxWidth:'295px',
-                textAlign:'center'
-            }}>
-                Congratulations!
-                Your email has been confirmed
-            </Typography>
 
             <Button
-                // onClick={handleClose}
+                onClick={goToLoginPageOnClickHandler}
                 style={{
-                    margin:'80px 0',
+                    margin: '80px 0',
                     width: '138px',
                     color: "white",
                     border: '1px solid black',

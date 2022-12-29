@@ -26,13 +26,15 @@ export const authAPI = {
         return instance.post('/auth/logout',{},{withCredentials: true})
     },
     me() {
-        return instance.get<{},AxiosResponse<MeResponseType>>('/auth/me')
+        return instance.get<{},AxiosResponse<MeResponseType>>('/auth/me',{withCredentials: true,    headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+            }},)
     },
     registration_confirmation(code:string){
         return instance.post<RecoveryPasswordDataType, AxiosResponse<PasswordResponseType>>('/auth/registration-confirmation', {code})
     },
     refreshToken() {
-        return instance.post('/auth/refresh-token',)
+        return instance.post<{}, AxiosResponse<LoginResponseType>>('/auth/refresh-token',{},{withCredentials: true})
     },
 
     // setNewPassword(data: SetNewPasswordType){

@@ -12,12 +12,12 @@ import {FormikErrors, useFormik} from "formik";
 import {Navigate, NavLink, useNavigate} from "react-router-dom";
 
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {useAppDispatch, useAppSelector} from "../hooks";
-import authpicture from '../pictures/auth.png'
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import authpicture from '../../pictures/auth.png'
 import Box from "@mui/material/Box";
-import {registrationTC} from "./auth-reducer";
-import {RegistrationModal} from "../modal windows/auth modal/RegistrationModal";
-
+import {registrationTC} from "../auth-reducer";
+import {RegistrationModal} from "../../modal windows/auth modal/RegistrationModal";
+import s from './registration.module.css'
 
 export type ValuesType = {
     login: string;
@@ -33,6 +33,7 @@ type FormikErrorType = {
 
 export const Registration = () => {
     const [emailAddress, setEmail]=useState('')
+    const [note, showNote] = useState('')
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -76,6 +77,7 @@ export const Registration = () => {
             formik.resetForm();
             dispatch(registrationTC(values));
             setEmail(values.email)
+          showNote('The link has been sent by email If you don’t receive an email, send link again')
             // console.log('EMAIL:', emailAddress)
         },
     });
@@ -106,12 +108,12 @@ export const Registration = () => {
 
 
     return (
-        <Box style={{display: "flex", justifyContent: 'space-around', marginTop: "75px"}}>
-            <Grid textAlign={"center"} width={"378px"}>
-                <Paper elevation={14} style={{padding: "30px", height: "392px"}}>
-                    <form onSubmit={formik.handleSubmit}>
-                        <FormControl text-align={'center'} fullWidth>
-                            <FormLabel>
+        <Box className={s.registrationWrapper}>
+            <Grid  width={"378px"}>
+                <Paper elevation={14} className={s.registration_registrationForm_wrapper}>
+                    <form onSubmit={formik.handleSubmit} >
+                        <FormControl  className={s.registration_registrationForm_label}>
+                            <FormLabel style={{marginBottom:'30px'}}>
                                 <h2>Sign Up</h2>
                             </FormLabel>
                             <FormGroup>
@@ -150,8 +152,10 @@ export const Registration = () => {
                                     }}
                                     {...formik.getFieldProps("password")}
                                 />
-                                {/*The link has been sent by email.*/}
-                                {/*If you don’t receive an email, send link again*/}
+                                <Box style={{minHeight:'50px'}}>
+                                    {note}
+                                </Box>
+
                                 <RegistrationModal email={emailAddress}/>
 
                                 {/*{JSON.stringify(formik.errors).length === 2*/}
@@ -164,8 +168,8 @@ export const Registration = () => {
 
                             </FormGroup>
                             <FormLabel>
-                                <h6 style={{color: "gray"}}>Already a member?</h6>
-                                <h4><NavLink to={'/'} style={{color: 'blue'}}>Sign In</NavLink></h4>
+                                <p style={{color: "gray"}}>Already a member?</p>
+                                <h4><NavLink to={'/'} style={{color: 'blue', }}>Sign In</NavLink></h4>
                             </FormLabel>
                         </FormControl>
 
@@ -173,7 +177,7 @@ export const Registration = () => {
                 </Paper>
             </Grid>
             <Box>
-                <img src={authpicture} alt="" style={{width: '632px', height: '433.64px'}}/>
+                <img src={authpicture} alt="" style={{width: '632px', height: '470px'}}/>
             </Box>
         </Box>
     )
