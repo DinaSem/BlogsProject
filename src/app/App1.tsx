@@ -104,6 +104,7 @@ export default function App1() {
                             <Route path='/registration-confirmation' element={<RegistrationConformation/>}/>
                             <Route path='/users/' element={<UsersPage/>}/>
                             <Route path='/profile/' element={<ProfilePage/>}/>
+                            <Route path='/registration-confirmation/:code' element={<RegistrationConformation/>}/>
                         </Routes>
                     </Box>
                 </Box>

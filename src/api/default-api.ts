@@ -4,7 +4,7 @@ const url = process.env.REACT_APP_BASE_URL
 
 export let instance = axios.create({
 
-    baseURL:'https://nest12.onrender.com/',
+    baseURL:'https://nest-test-blog4412.vercel.app/',
     // baseURL: url,
     headers: {
         // 'Authorization': 'Basic YWRtaW46cXdlcnR5'

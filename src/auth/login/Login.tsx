@@ -29,7 +29,7 @@ type FormikValuesType = {
     loginOrEmail?: string
     password?: string
 }
-
+//TODO надпись об ошибке до ввода данных
 const Login = () => {
     const dispatch = useAppDispatch()
 
@@ -46,9 +46,7 @@ const Login = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const goToRegistrationOnClickHandler = () => {
-        <NavLink to={'/registration'}/>
-    }
+
     const validate = (values: FormikValuesType) => {
         const errors: FormikErrorType = {};
         if (!values.loginOrEmail) {
@@ -88,7 +86,7 @@ const Login = () => {
     return (
         <Box className={s.loginWrapper}>
             <Grid width={"378px"}>
-                <Paper elevation={14}  className={s.login_loginForm_wrapper}>
+                <Paper elevation={14} className={s.login_loginForm_wrapper}>
                     <form onSubmit={formik.handleSubmit}>
                         <FormControl fullWidth>
                             <FormLabel className={s.login_loginForm_label}>
@@ -132,10 +130,29 @@ const Login = () => {
                                                                                               textDecoration: 'none'
                                                                                           }}>Forgot password?</NavLink>
                                 </h6>
-                                <Button type={'submit'} variant={'contained'}
-                                        style={{color: 'white', background: '#F8346B', minWidth: '330px',textTransform:'none',}} fullWidth>
-                                    Sign In
-                                </Button>
+                                {JSON.stringify(formik.errors).length === 2
+                                && JSON.stringify(formik.values.loginOrEmail).length === 0
+                                && JSON.stringify(formik.values.password).length === 0
+                                    ? <Button type={'submit'} variant={'contained'} disabled
+                                              style={{
+                                                  color: 'white',
+                                                  background: '#F8346B',
+                                                  minWidth: '330px',
+                                                  textTransform: 'none',
+                                              }} fullWidth>
+                                        Sign In
+                                    </Button>
+                                    : <Button type={'submit'} variant={'contained'}
+                                              style={{
+                                                  color: 'white',
+                                                  background: '#F8346B',
+                                                  minWidth: '330px',
+                                                  textTransform: 'none',
+                                              }} fullWidth>
+                                        Sign In
+                                    </Button>
+                                }
+
                             </FormGroup>
                             <FormLabel style={{textAlign: "center"}}>
                                 <h6 style={{
@@ -147,8 +164,8 @@ const Login = () => {
                                     textAlign: 'center',
                                     color: ' #797476',
                                 }}>Don’t have an account?</h6>
-                                <h5 style={{color: '#F8346B', margin: "7px"}} onClick={goToRegistrationOnClickHandler}>
-                                </h5>
+                                <h4><NavLink to={'/registration'} style={{color: '#F8346B', margin: "7px"}}>Sign
+                                    Up</NavLink></h4>
                             </FormLabel>
                         </FormControl>
                     </form>

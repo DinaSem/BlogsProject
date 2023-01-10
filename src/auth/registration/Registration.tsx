@@ -1,16 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {
-    Button,
-    FormControl,
-    FormGroup,
-    FormLabel,
-    Grid, IconButton, Input, InputAdornment, InputLabel,
-    Paper,
-    TextField
-} from "@mui/material";
+import {FormControl, FormGroup, FormLabel, Grid, IconButton, InputAdornment, Paper, TextField} from "@mui/material";
 import {FormikErrors, useFormik} from "formik";
-import {Navigate, NavLink, useNavigate} from "react-router-dom";
-
+import {NavLink} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import authpicture from '../../pictures/auth.png'
@@ -32,11 +23,11 @@ type FormikErrorType = {
 }
 
 export const Registration = () => {
-    const [emailAddress, setEmail]=useState('')
+    const [emailAddress, setEmail] = useState('')
     const [note, showNote] = useState('')
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -62,7 +53,7 @@ export const Registration = () => {
                 errors.email = 'Invalid email address';
             }
 
-            if (!values.password || values.password.length === 0) {
+            if (!values.password) {
                 errors.password = 'Required';
             } else if (values.password.length < 6) {
                 errors.password = "Password cannot be less than 6 characters...";
@@ -77,8 +68,7 @@ export const Registration = () => {
             formik.resetForm();
             dispatch(registrationTC(values));
             setEmail(values.email)
-          showNote('The link has been sent by email If you don’t receive an email, send link again')
-            // console.log('EMAIL:', emailAddress)
+            showNote('The link has been sent by email If you don’t receive an email, send link again')
         },
     });
 
@@ -109,18 +99,18 @@ export const Registration = () => {
 
     return (
         <Box className={s.registrationWrapper}>
-            <Grid  width={"378px"}>
+            <Grid width={"378px"}>
                 <Paper elevation={14} className={s.registration_registrationForm_wrapper}>
-                    <form onSubmit={formik.handleSubmit} >
-                        <FormControl  className={s.registration_registrationForm_label}>
-                            <FormLabel style={{marginBottom:'30px'}}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <FormControl className={s.registration_registrationForm_label}>
+                            <FormLabel style={{marginBottom: '30px'}}>
                                 <h2>Sign Up</h2>
                             </FormLabel>
                             <FormGroup>
                                 <TextField
                                     label="Username"
                                     variant="standard"
-                                    error={formik.touched.login && !!formik.errors.login ? true : false}
+                                    error={!!(formik.touched.login && !!formik.errors.login)}
                                     helperText={formik.touched.login && !!formik.errors.login ? formik.errors.login : " "}
                                     {...formik.getFieldProps("login")}
                                 />
@@ -128,7 +118,7 @@ export const Registration = () => {
                                     label="Email"
                                     variant="standard"
                                     type={'email'}
-                                    error={formik.touched.email && !!formik.errors.email ? true : false}
+                                    error={!!(formik.touched.email && !!formik.errors.email)}
                                     helperText={formik.touched.email && formik.errors.email ? formik.errors.email : " "}
                                     {...formik.getFieldProps("email")}
 
@@ -137,7 +127,7 @@ export const Registration = () => {
                                     label="Password"
                                     type={password ? 'text' : 'password'}
                                     variant="standard"
-                                    error={formik.touched.password && !!formik.errors.password ? true : false}
+                                    error={!!(formik.touched.password && !!formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password ? formik.errors.password : " "}
                                     InputProps={{
                                         endAdornment: <InputAdornment position="end">
@@ -152,24 +142,22 @@ export const Registration = () => {
                                     }}
                                     {...formik.getFieldProps("password")}
                                 />
-                                <Box style={{minHeight:'50px'}}>
+                                <Box style={{minHeight: '50px', color:'#797476',fontWeight: '400', fontSize: '14px',
+                                    lineHeight: '24px', textAlign:"left", alignContent:"center"}}>
                                     {note}
                                 </Box>
-
-                                <RegistrationModal email={emailAddress}/>
-
-                                {/*{JSON.stringify(formik.errors).length === 2*/}
-                                {/*    ? <Button type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}}>*/}
-                                {/*        Sign Up*/}
-                                {/*    </Button>*/}
-                                {/*    : <Button disabled type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B'}}>*/}
-                                {/*        Sign Up*/}
-                                {/*    </Button>}*/}
-
+                                {JSON.stringify(formik.errors).length === 2
+                                && JSON.stringify(formik.values.login).length === 0
+                                && JSON.stringify(formik.values.email).length === 0
+                                && JSON.stringify(formik.values.password).length === 0
+                                    ? <RegistrationModal email={emailAddress} disabled={true}/>
+                                    : <RegistrationModal email={emailAddress} disabled={false}/>
+                                }
                             </FormGroup>
                             <FormLabel>
                                 <p style={{color: "gray"}}>Already a member?</p>
-                                <h4><NavLink to={'/'} style={{color: 'blue', }}>Sign In</NavLink></h4>
+                                <h4><NavLink to={'/'} style={{color: 'blue', marginBottom: '0px'}}>Sign In</NavLink>
+                                </h4>
                             </FormLabel>
                         </FormControl>
 

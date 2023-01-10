@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 type PropsType={
     email:string
+    disabled:boolean
 }
 
 
@@ -20,11 +21,11 @@ export const RegistrationModal = (props:PropsType) => {
 
     const handleClose = () => {
         setOpen(false)
-        navigate('/')
+        //navigate('/')
     }
     return (
         <Box style={{display: 'inline-block'}}>
-            <Button type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B',width:'330px'}}onClick={handleOpen}>
+            <Button disabled={props.disabled} type={'submit'} variant={'contained'} style={{color:'white', background:'#F8346B',width:'330px'}}onClick={handleOpen}>
                 Sign Up
             </Button>
 

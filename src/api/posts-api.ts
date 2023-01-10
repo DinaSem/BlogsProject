@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from "axios";
 
 
 const instance = axios.create({
-    baseURL: 'https://nest12.onrender.com/',
+    baseURL:'https://nest-test-blog4412.vercel.app/',
     headers: {
         'Authorization': 'Basic YWRtaW46cXdlcnR5',
     }

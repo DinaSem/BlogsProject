@@ -13,7 +13,8 @@ let initialState = {
     recoveryStatus: false,
     email: "",
     newPasswordStatus: false,
-    profileData:{} as MeResponseType
+    profileData: {} as MeResponseType,
+    statusOfConformation:false
 }
 
 
@@ -80,6 +81,12 @@ export const setProfileAC = (profileData: MeResponseType) => {
         profileData
     } as const
 }
+export const setStatusOfConformation = (statusOfConformation: boolean) => {
+    return {
+        type: 'auth/SET-STATUS-CONFORMATION',
+        statusOfConformation
+    } as const
+}
 
 
 //thunks
@@ -91,7 +98,7 @@ export const loginTC = (data: LoginDataType,): AppThunk => async dispatch => {
         const accessToken = res.data.accessToken;
         // console.log(res.headers)
         localStorage.setItem('jwt_token', accessToken)
-        console.log('accessToken from login',accessToken)
+        console.log('accessToken from login', accessToken)
         dispatch(loginAC(true))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -146,12 +153,11 @@ export const initializeAppTC = (): AppThunk => async dispatch => {
     } catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
         try {
-            const res =  await authAPI.refreshToken()
+            const res = await authAPI.refreshToken()
             const accessToken = res.data.accessToken;
             localStorage.setItem('jwt_token', accessToken)
-            console.log('refresh',accessToken)
-        }
-        catch (e) {
+            console.log('refresh', accessToken)
+        } catch (e) {
             dispatch(loginAC(false))
             if (axios.isAxiosError(err)) {
                 const error = err.response?.data
@@ -215,34 +221,29 @@ export const registration_conformationTC = (code: string): AppThunk => async dis
     }
 }
 
+export const registrationConformationTC = (code:string): AppThunk => dispatch => {
+    dispatch(setAppStatusAC("loading"))
+    // const code = `Click on the link bellow to confirm email:
+    //         <a href=https://dinasem.github.io/BlogsProject/#/registration-confirmation/$token$'>link</a></div>`
+    // хтмп-письмо, вместо $token$ бэк вставит токен
+    try {
+        const res = authAPI.registration_confirmation(code)
+        dispatch(setStatusOfConformation(true))
+        // dispatch(changePasswordRecoveryStatusAC(res.data.success, data.email))
+    } catch (e) {
+        const err = e as Error | AxiosError<ErrorsMessagesType>
+        if (axios.isAxiosError(err)) {
+            const error = err.response?.data
+                ? err.response.data
+                : err.message;
+            console.log(error)
+            handleServerNetworkError({message: error}, dispatch)
+        }
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
+}
 
-
-//
-// export const passwordRecoveryTC = (email: { email: string }) => {
-//     return (dispatch: AppDispatch) => {
-//         dispatch(setAppStatusAC("loading"))
-//         const data = {
-//             ...email, // кому восстанавливать пароль
-//             from: "Yuhee <YuheePlyuhee@gmail.com>", // можно указать разработчика фронта)
-//             message: `<div style="background-color: lime; padding: 15px">
-//             password recovery link:
-//             Forgot your password? That is okay? it happens! Click on the link bellow to reset yor password:
-//             <a href='https://tatiankris.github.io/autumn-project/#/new-password/$token$'>link</a></div>`
-//             // хтмп-письмо, вместо $token$ бэк вставит токен
-//         }
-//         authAPI.passwordRecovery(data)
-//             .then(res => {
-//                 dispatch(changePasswordRecoveryStatusAC(res.data.success, data.email))
-//             })
-//             .catch(err => {
-//                 const error = err.response
-//                     ? err.response.data.error
-//                     : err.message
-//                 handleServerNetworkError({message: error}, dispatch)
-//             })
-//             .finally(() => dispatch(setAppStatusAC("idle")))
-//     }
-// }
 //
 // export const setNewPasswordTC = (password: string, resetPasswordToken: string) => (dispatch: AppDispatch) => {
 //     dispatch(setAppStatusAC("loading"));
@@ -273,4 +274,5 @@ export type AuthActionsType =
     | ReturnType<typeof changePasswordRecoveryStatusAC>
     | ReturnType<typeof setNewPasswordAC>
     | ReturnType<typeof setProfileAC>
+    | ReturnType<typeof setStatusOfConformation>
 
