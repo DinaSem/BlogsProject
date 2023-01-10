@@ -20,7 +20,7 @@ export const RegistrationConformation = () => {
         if(code){
             dispatch(registrationConformationTC(code))
         }
-    }, [dispatch])
+    }, [dispatch, code])
     return (
         <Box style={{textAlign: 'center', marginTop: '60px', display: "block"}}>
             <Box style={{display:"flex",justifyContent:"center"}}>
