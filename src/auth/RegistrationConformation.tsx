@@ -1,19 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import confirmImg from '../pictures/registr-confirm.png'
 import Button from "@mui/material/Button";
-import {logoutTC} from "./auth-reducer";
+import {logoutTC, registrationConformationTC} from "./auth-reducer";
+import {fetchPostsTC} from "../posts/post-reducer";
+import {useAppDispatch} from "../hooks";
 
 export const RegistrationConformation = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch()
     const {code} = useParams()
 
     const goToLoginPageOnClickHandler = () => {
         navigate('/')
     }
-    
+    useEffect(() => {
+        if(code){
+            dispatch(registrationConformationTC(code))
+        }
+    }, [dispatch])
     return (
         <Box style={{textAlign: 'center', marginTop: '60px', display: "block"}}>
             <Box style={{display:"flex",justifyContent:"center"}}>

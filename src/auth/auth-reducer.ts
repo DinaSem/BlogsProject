@@ -228,7 +228,7 @@ export const registrationConformationTC = (code:string): AppThunk => dispatch =>
     // хтмп-письмо, вместо $token$ бэк вставит токен
     try {
         const res = authAPI.registration_confirmation(code)
-        dispatch(setStatusOfConformation(true))
+        // dispatch(setStatusOfConformation(true))
         // dispatch(changePasswordRecoveryStatusAC(res.data.success, data.email))
     } catch (e) {
         const err = e as Error | AxiosError<ErrorsMessagesType>
