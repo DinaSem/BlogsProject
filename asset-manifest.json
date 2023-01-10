@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/BlogsProject/static/css/main.54332584.css",
-    "main.js": "/BlogsProject/static/js/main.f2abab6f.js",
+    "main.js": "/BlogsProject/static/js/main.402dc263.js",
     "static/js/787.982a5c93.chunk.js": "/BlogsProject/static/js/787.982a5c93.chunk.js",
     "static/media/auth.png": "/BlogsProject/static/media/auth.a72ac5f8fef6f7174f42.png",
     "static/media/registr-confirm.png": "/BlogsProject/static/media/registr-confirm.c53a6e8a9c992ff9dd89.png",
@@ -9,11 +9,11 @@
     "static/media/Blogers.svg": "/BlogsProject/static/media/Blogers.ed58696b15cd99e9f02de30dbf79acd2.svg",
     "static/media/BlogersRed.svg": "/BlogsProject/static/media/BlogersRed.2c16114af5116a946eaaff35c60bd5cb.svg",
     "main.54332584.css.map": "/BlogsProject/static/css/main.54332584.css.map",
-    "main.f2abab6f.js.map": "/BlogsProject/static/js/main.f2abab6f.js.map",
+    "main.402dc263.js.map": "/BlogsProject/static/js/main.402dc263.js.map",
     "787.982a5c93.chunk.js.map": "/BlogsProject/static/js/787.982a5c93.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.54332584.css",
-    "static/js/main.f2abab6f.js"
+    "static/js/main.402dc263.js"
   ]
 }
